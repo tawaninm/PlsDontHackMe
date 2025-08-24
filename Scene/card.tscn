@@ -1,19 +1,26 @@
-[gd_scene load_steps=3 format=3 uid="uid://ch5fymw61da7g"]
+[gd_scene load_steps=4 format=3 uid="uid://u44cll7bp3s0"]
 
-[ext_resource type="Texture2D" uid="uid://bifb6xgm88j88" path="res://Asset/IMG/30.png" id="1_okpo3"]
+[ext_resource type="Texture2D" uid="uid://dxnhtc0mraow3" path="res://Asset/IMG/29.png" id="1_vp1ek"]
+[ext_resource type="Script" path="res://Script/card.gd" id="1_xlue2"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_n7mkn"]
-size = Vector2(616.11, 1039.6)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p405s"]
+size = Vector2(563, 1055)
 
-[node name="Card" type="Node"]
+[node name="Card" type="Node2D"]
+position = Vector2(0, -9.53674e-07)
+scale = Vector2(0.2, 0.2)
+script = ExtResource("1_xlue2")
 
-[node name="CardImage" type="Sprite2D" parent="."]
-position = Vector2(573, 309)
-scale = Vector2(0.344094, 0.344094)
-texture = ExtResource("1_okpo3")
+[node name="CardImg" type="Sprite2D" parent="."]
+texture = ExtResource("1_vp1ek")
 
-[node name="Area2D" type="Area2D" parent="CardImage"]
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(0, 5.72205e-06)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CardImage/Area2D"]
-position = Vector2(0, 5.40613)
-shape = SubResource("RectangleShape2D_n7mkn")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(3.49998, -1.90735e-06)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_p405s")
+
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]
