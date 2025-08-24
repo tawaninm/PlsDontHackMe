@@ -16,5 +16,5 @@ position = Vector2(520, 317)
 position = Vector2(360, 314)
 
 [node name="Cardslot" parent="." instance=ExtResource("3_xtasv")]
-position = Vector2(764, 315)
+position = Vector2(360, 314)
 scale = Vector2(1, 1.52)
