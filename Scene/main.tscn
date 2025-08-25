@@ -1,20 +1,40 @@
-[gd_scene load_steps=4 format=3 uid="uid://bbjh5jh5bs1t5"]
+[gd_scene load_steps=8 format=3 uid="uid://b7wlgwr6spoua"]
 
 [ext_resource type="Script" uid="uid://wf8xef8mvt6q" path="res://Script/card_manager.gd" id="1_56fl5"]
-[ext_resource type="PackedScene" uid="uid://u44cll7bp3s0" path="res://Scene/card.tscn" id="1_oluc1"]
+[ext_resource type="Script" uid="uid://dldnexsstevk" path="res://Script/player_hand.gd" id="3_r34rm"]
 [ext_resource type="PackedScene" uid="uid://d3thw7ewxb7wj" path="res://Scene/cardslot.tscn" id="3_xtasv"]
+[ext_resource type="Script" uid="uid://1kojqqmyjx8e" path="res://Script/deck.gd" id="4_1xcnr"]
+[ext_resource type="Texture2D" uid="uid://dxnhtc0mraow3" path="res://Asset/IMG/29.png" id="4_2wwxx"]
+[ext_resource type="Script" uid="uid://ba0ysbiwv3o4a" path="res://Script/input.gd" id="6_ow1sv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3amdw"]
+size = Vector2(96, 166)
 
 [node name="Main" type="Node2D"]
 
 [node name="CardManager" type="Node2D" parent="."]
 script = ExtResource("1_56fl5")
 
-[node name="Card" parent="CardManager" instance=ExtResource("1_oluc1")]
-position = Vector2(520, 317)
-
-[node name="Card2" parent="CardManager" instance=ExtResource("1_oluc1")]
-position = Vector2(360, 314)
-
 [node name="Cardslot" parent="." instance=ExtResource("3_xtasv")]
-position = Vector2(360, 314)
+position = Vector2(-87, 157)
 scale = Vector2(1, 1.52)
+
+[node name="PlayerHand" type="Node2D" parent="."]
+script = ExtResource("3_r34rm")
+
+[node name="Deck" type="Node2D" parent="."]
+position = Vector2(600, 300)
+script = ExtResource("4_1xcnr")
+
+[node name="Sprite2D" type="Sprite2D" parent="Deck"]
+scale = Vector2(0.195, 0.195)
+texture = ExtResource("4_2wwxx")
+
+[node name="Area2D" type="Area2D" parent="Deck"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Deck/Area2D"]
+position = Vector2(0, -7)
+shape = SubResource("RectangleShape2D_3amdw")
+
+[node name="Input" type="Node2D" parent="."]
+script = ExtResource("6_ow1sv")
