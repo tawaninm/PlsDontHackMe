@@ -13,6 +13,7 @@ func _ready() -> void:
 
 func add_card_to_hand(card):
 	player_hand.insert(0, card)
+	card.z_index = 1
 	update_hand_position()
 
 func update_hand_position():
