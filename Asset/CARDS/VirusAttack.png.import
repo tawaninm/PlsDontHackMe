@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b5flh1ut88eet"
-path="res://.godot/imported/13.png-fe8dcdc49ce8f7bbac51d3c0d42a5239.ctex"
+uid="uid://x074ksx5gumx"
+path="res://.godot/imported/VirusAttack.png-191238617e7ee1b3dc89abfefcf328bd.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Asset/CARDS/13.png"
-dest_files=["res://.godot/imported/13.png-fe8dcdc49ce8f7bbac51d3c0d42a5239.ctex"]
+source_file="res://Asset/CARDS/VirusAttack.png"
+dest_files=["res://.godot/imported/VirusAttack.png-191238617e7ee1b3dc89abfefcf328bd.ctex"]
 
 [params]
 
