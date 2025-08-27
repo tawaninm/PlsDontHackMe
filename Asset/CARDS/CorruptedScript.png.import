@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://x074ksx5gumx"
-path="res://.godot/imported/19.png-5f9ae1a4f2ec9316c4d744b08b7142d2.ctex"
+uid="uid://cu1i5grs4f3kf"
+path="res://.godot/imported/CorruptedScript.png-ea5cc1fd817054e0354c691e866274ce.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Asset/CARDS/19.png"
-dest_files=["res://.godot/imported/19.png-5f9ae1a4f2ec9316c4d744b08b7142d2.ctex"]
+source_file="res://Asset/CARDS/CorruptedScript.png"
+dest_files=["res://.godot/imported/CorruptedScript.png-ea5cc1fd817054e0354c691e866274ce.ctex"]
 
 [params]
 
