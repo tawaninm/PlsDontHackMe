@@ -26,9 +26,11 @@ func raycast_at_cursor():
 	if result.size() > 0:
 		var collider = result[0].collider
 		if collider is Node:
+			# Check deck first
 			if collider.get_parent() == deck_reference:
 				deck_reference.draw_card()
 				return
+			# Check card
 			elif collider.collision_mask & COLLISION_MASK_CARD != 0:
 				var card_found = collider.get_parent()
 				if card_found:
