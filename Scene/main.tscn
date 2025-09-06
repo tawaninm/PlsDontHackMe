@@ -19,12 +19,12 @@ script = ExtResource("1_56fl5")
 script = ExtResource("3_iqutw")
 
 [node name="Deck" type="Node2D" parent="."]
-position = Vector2(940, 513)
+position = Vector2(950, 350)
 scale = Vector2(0.200001, 0.200001)
 script = ExtResource("4_lib1h")
 
 [node name="Sprite2D" type="Sprite2D" parent="Deck"]
-position = Vector2(92.2488, -174.481)
+z_index = -2
 scale = Vector2(1.32311, 1.32311)
 texture = ExtResource("4_i0fp1")
 
@@ -33,20 +33,29 @@ collision_layer = 4
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Deck/Area2D"]
-position = Vector2(97.999, -183.998)
 scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_ixwm3")
 
+[node name="RichTextLabel" type="RichTextLabel" parent="Deck"]
+modulate = Color(1, 0, 0, 1)
+z_index = -2
+offset_left = -49.9997
+offset_top = -399.998
+offset_right = -19.9997
+offset_bottom = -369.998
+scale = Vector2(10, 10)
+text = "0"
+
 [node name="Cardslot" parent="." instance=ExtResource("3_xtasv")]
-position = Vector2(764, 760)
+position = Vector2(775, 645)
 scale = Vector2(1, 1.52)
 
 [node name="Cardslot2" parent="." instance=ExtResource("3_xtasv")]
-position = Vector2(937, 759)
+position = Vector2(948, 644)
 scale = Vector2(1, 1.52)
 
 [node name="Cardslot3" parent="." instance=ExtResource("3_xtasv")]
-position = Vector2(1110, 756)
+position = Vector2(1121, 641)
 scale = Vector2(1, 1.52)
 
 [node name="InputManager" type="Node2D" parent="."]

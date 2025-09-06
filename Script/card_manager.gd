@@ -2,6 +2,7 @@ extends Node2D
 
 const COLLISIONMASK_CARD = 1
 const COLLISIONMASK_CARD_SLOT = 2
+const DEFAULT_CARD_MOVE_SPEED = 0.1
 
 var card_being_dragged
 var screen_size
@@ -21,16 +22,6 @@ func _process(delta: float) -> void:
 		card_being_dragged.position = Vector2(clamp(mouse_pos.x, 0, screen_size.x),
 			clamp(mouse_pos.y, 0, screen_size.y))
 
-#func _input(event) :
-#	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT :
-#		if event.pressed:
-#			var card = raycast_check_for_card()
-#			if card :
-#				start_drag(card)
-#		else :
-#			if card_being_dragged:
-#				finish_drag()
-
 func start_drag(card):
 	card_being_dragged = card
 	card.scale = Vector2(0.2,0.2)
@@ -46,7 +37,7 @@ func finish_drag():
 		card_being_dragged.get_node("Area2D/CollisionShape2D").disabled = true
 		card_slot_found.card_in_slot = true
 	else :
-		player_hand_reference.add_card_to_hand(card_being_dragged)
+		player_hand_reference.add_card_to_hand(card_being_dragged, DEFAULT_CARD_MOVE_SPEED)
 	card_being_dragged = null
 
 func connect_card_signals(card):
@@ -54,7 +45,8 @@ func connect_card_signals(card):
 	card.connect("hovered_off", on_hovered_off_card)
 	
 func on_left_click_released():
-	print("card  manager left mouse relased signal")
+	if card_being_dragged:
+		finish_drag()
 
 func on_hovered_over_card(card) :
 	if !is_hovering_on_card:
