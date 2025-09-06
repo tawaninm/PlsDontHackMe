@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dy8vhdsqvw83x"
-path="res://.godot/imported/32.png-7e4b20133425649166efa01803885981.ctex"
+uid="uid://dne6am0l02fqb"
+path="res://.godot/imported/fieduseCard.png-5e2509cd78669cbb1db48756846f50a5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Asset/IMG/32.png"
-dest_files=["res://.godot/imported/32.png-7e4b20133425649166efa01803885981.ctex"]
+source_file="res://Asset/fieduseCard.png"
+dest_files=["res://.godot/imported/fieduseCard.png-5e2509cd78669cbb1db48756846f50a5.ctex"]
 
 [params]
 

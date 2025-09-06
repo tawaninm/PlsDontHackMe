@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://bbjh5jh5bs1t5"]
+[gd_scene load_steps=9 format=3 uid="uid://bbjh5jh5bs1t5"]
 
 [ext_resource type="Script" path="res://Script/card_manager.gd" id="1_56fl5"]
+[ext_resource type="Texture2D" uid="uid://bxkyymwn3fc4p" path="res://Asset/IMG/FiledBack.png" id="1_a84f0"]
 [ext_resource type="Script" path="res://Script/playerhand.gd" id="3_iqutw"]
 [ext_resource type="PackedScene" uid="uid://d3thw7ewxb7wj" path="res://Scene/cardslot.tscn" id="3_xtasv"]
 [ext_resource type="Texture2D" uid="uid://dxnhtc0mraow3" path="res://Asset/IMG/29.png" id="4_i0fp1"]
@@ -12,15 +13,15 @@ size = Vector2(743.998, 1402)
 
 [node name="Main" type="Node2D"]
 
-[node name="CardManager" type="Node2D" parent="."]
-script = ExtResource("1_56fl5")
-
-[node name="Playerhand" type="Node2D" parent="."]
-script = ExtResource("3_iqutw")
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -2
+position = Vector2(972.046, 515.937)
+scale = Vector2(0.881092, 0.881092)
+texture = ExtResource("1_a84f0")
 
 [node name="Deck" type="Node2D" parent="."]
-position = Vector2(950, 350)
-scale = Vector2(0.200001, 0.200001)
+position = Vector2(981, 387)
+scale = Vector2(0.107308, 0.107308)
 script = ExtResource("4_lib1h")
 
 [node name="Sprite2D" type="Sprite2D" parent="Deck"]
@@ -33,7 +34,6 @@ collision_layer = 4
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Deck/Area2D"]
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_ixwm3")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Deck"]
@@ -45,17 +45,24 @@ offset_right = -19.9997
 offset_bottom = -369.998
 scale = Vector2(10, 10)
 text = "0"
+metadata/_edit_use_anchors_ = true
+
+[node name="CardManager" type="Node2D" parent="."]
+script = ExtResource("1_56fl5")
+
+[node name="Playerhand" type="Node2D" parent="."]
+script = ExtResource("3_iqutw")
 
 [node name="Cardslot" parent="." instance=ExtResource("3_xtasv")]
-position = Vector2(775, 645)
+position = Vector2(799, 693)
 scale = Vector2(1, 1.52)
 
 [node name="Cardslot2" parent="." instance=ExtResource("3_xtasv")]
-position = Vector2(948, 644)
+position = Vector2(978, 693)
 scale = Vector2(1, 1.52)
 
 [node name="Cardslot3" parent="." instance=ExtResource("3_xtasv")]
-position = Vector2(1121, 641)
+position = Vector2(1148, 697)
 scale = Vector2(1, 1.52)
 
 [node name="InputManager" type="Node2D" parent="."]
