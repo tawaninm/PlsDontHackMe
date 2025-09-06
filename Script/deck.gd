@@ -3,11 +3,14 @@ extends Node2D
 const CARD_SCENE_PATH = "res://Scene/card.tscn"
 const CARD_DRAW_SPEED = 0.2
 
-var player_deck = ["Knight","Knight","Knight"]
+var player_deck = ["FileInfector","VirusAttack","DdosAttack","AntiVirus"]
+var card_database_reference 
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	$RichTextLabel.text = str(player_deck.size())
+	card_database_reference = preload("res://Script/CardDatabase.gd")
 
 
 func draw_card():
@@ -22,6 +25,8 @@ func draw_card():
 	$RichTextLabel.text = str(player_deck.size())
 	var card_scene = preload(CARD_SCENE_PATH)
 	var new_card = card_scene.instantiate()
+	new_card.get_node("CPU").text = str(card_database_reference.CARDS[card_drawn][0])
+	new_card.get_node("Ingre").text = str(card_database_reference.CARDS[card_drawn][1])
 	$"../CardManager".add_child(new_card)
 	new_card.name = "card"
 	$"../Playerhand".add_card_to_hand(new_card, CARD_DRAW_SPEED)

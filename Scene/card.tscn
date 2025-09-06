@@ -21,5 +21,23 @@ position = Vector2(0, 5.72205e-06)
 position = Vector2(2.49998, -1.90735e-06)
 shape = SubResource("RectangleShape2D_p405s")
 
+[node name="CPU" type="RichTextLabel" parent="."]
+modulate = Color(1, 0.0588235, 0.0588235, 1)
+offset_left = 160.0
+offset_top = -560.0
+offset_right = 268.0
+offset_bottom = -520.0
+scale = Vector2(10, 10)
+text = "0"
+
+[node name="Ingre" type="RichTextLabel" parent="."]
+modulate = Color(1, 0.0588235, 0.0588235, 1)
+offset_left = -280.0
+offset_top = 320.0
+offset_right = -152.0
+offset_bottom = 357.0
+scale = Vector2(10, 10)
+text = "0"
+
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]
