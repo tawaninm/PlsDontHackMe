@@ -60,7 +60,7 @@ func on_hovered_over_card(card) :
 	hightlight_card(card,true)
 
 func on_hovered_off_card(card) :
-	#check if card is not in card slot and not being drag
+	#check if card is not in card slot and not being drag 7.00
 	if !card.card_slot_card_is_in && !card_being_dragged :
 			hightlight_card(card,false)
 			# check if hovered off card straight on to another card
