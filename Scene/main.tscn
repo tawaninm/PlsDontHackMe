@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bbjh5jh5bs1t5"]
+[gd_scene load_steps=10 format=3 uid="uid://bbjh5jh5bs1t5"]
 
 [ext_resource type="Script" path="res://Script/card_manager.gd" id="1_56fl5"]
 [ext_resource type="Texture2D" uid="uid://bxkyymwn3fc4p" path="res://Asset/IMG/FiledBack.png" id="1_a84f0"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://dxnhtc0mraow3" path="res://Asset/IMG/29.png" id="4_i0fp1"]
 [ext_resource type="Script" path="res://Script/deck.gd" id="4_lib1h"]
 [ext_resource type="Script" path="res://Script/input_manager.gd" id="7_h36c2"]
+[ext_resource type="FontFile" uid="uid://da278r8wxdci8" path="res://Asset/Font/rainyhearts.ttf" id="8_y2327"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ixwm3"]
 size = Vector2(743.998, 1402)
@@ -15,12 +16,12 @@ size = Vector2(743.998, 1402)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = -2
-position = Vector2(972.046, 515.937)
+position = Vector2(960, 540)
 scale = Vector2(0.881092, 0.881092)
 texture = ExtResource("1_a84f0")
 
 [node name="Deck" type="Node2D" parent="."]
-position = Vector2(981, 387)
+position = Vector2(960, 412)
 scale = Vector2(0.107308, 0.107308)
 script = ExtResource("4_lib1h")
 
@@ -50,20 +51,103 @@ metadata/_edit_use_anchors_ = true
 [node name="CardManager" type="Node2D" parent="."]
 script = ExtResource("1_56fl5")
 
+[node name="CardSlotPlayer1" type="Node" parent="."]
+
+[node name="Cardslot" parent="CardSlotPlayer1" instance=ExtResource("3_xtasv")]
+position = Vector2(700, 691)
+scale = Vector2(1, 1.52)
+
+[node name="Cardslot2" parent="CardSlotPlayer1" instance=ExtResource("3_xtasv")]
+position = Vector2(825, 691)
+scale = Vector2(1, 1.52)
+
+[node name="Cardslot3" parent="CardSlotPlayer1" instance=ExtResource("3_xtasv")]
+position = Vector2(960, 691)
+scale = Vector2(1, 1.52)
+
+[node name="Cardslot4" parent="CardSlotPlayer1" instance=ExtResource("3_xtasv")]
+position = Vector2(1085, 691)
+scale = Vector2(1, 1.52)
+
+[node name="Cardslot5" parent="CardSlotPlayer1" instance=ExtResource("3_xtasv")]
+position = Vector2(1220, 691)
+scale = Vector2(1, 1.52)
+
+[node name="CardSlotPlayer2" type="Node" parent="."]
+
+[node name="Cardslot" parent="CardSlotPlayer2" instance=ExtResource("3_xtasv")]
+position = Vector2(1075, 263)
+rotation = 0.523599
+scale = Vector2(1, 1.52)
+
+[node name="Cardslot2" parent="CardSlotPlayer2" instance=ExtResource("3_xtasv")]
+position = Vector2(1167, 318)
+rotation = 0.523599
+scale = Vector2(1, 1.52)
+
+[node name="Cardslot3" parent="CardSlotPlayer2" instance=ExtResource("3_xtasv")]
+position = Vector2(1255, 369)
+rotation = 0.523599
+scale = Vector2(1, 1.52)
+
+[node name="Cardslot4" parent="CardSlotPlayer2" instance=ExtResource("3_xtasv")]
+position = Vector2(1343, 417)
+rotation = 0.523599
+scale = Vector2(1, 1.52)
+
+[node name="Cardslot5" parent="CardSlotPlayer2" instance=ExtResource("3_xtasv")]
+position = Vector2(1431, 465)
+rotation = 0.523599
+scale = Vector2(1, 1.52)
+
+[node name="CardSlotPlayer3" type="Node" parent="."]
+
+[node name="Cardslot" parent="CardSlotPlayer3" instance=ExtResource("3_xtasv")]
+position = Vector2(493, 467)
+rotation = -0.523599
+scale = Vector2(1, 1.52)
+
+[node name="Cardslot2" parent="CardSlotPlayer3" instance=ExtResource("3_xtasv")]
+position = Vector2(585, 414)
+rotation = -0.523599
+scale = Vector2(1, 1.52)
+
+[node name="Cardslot3" parent="CardSlotPlayer3" instance=ExtResource("3_xtasv")]
+position = Vector2(675, 365)
+rotation = -0.523599
+scale = Vector2(1, 1.52)
+
+[node name="Cardslot4" parent="CardSlotPlayer3" instance=ExtResource("3_xtasv")]
+position = Vector2(766, 314)
+rotation = -0.523599
+scale = Vector2(1, 1.52)
+
+[node name="Cardslot5" parent="CardSlotPlayer3" instance=ExtResource("3_xtasv")]
+position = Vector2(859, 255)
+rotation = -0.523599
+scale = Vector2(1, 1.52)
+
 [node name="Playerhand" type="Node2D" parent="."]
 script = ExtResource("3_iqutw")
 
-[node name="Cardslot" parent="." instance=ExtResource("3_xtasv")]
-position = Vector2(799, 693)
-scale = Vector2(1, 1.52)
-
-[node name="Cardslot2" parent="." instance=ExtResource("3_xtasv")]
-position = Vector2(978, 693)
-scale = Vector2(1, 1.52)
-
-[node name="Cardslot3" parent="." instance=ExtResource("3_xtasv")]
-position = Vector2(1148, 697)
-scale = Vector2(1, 1.52)
-
 [node name="InputManager" type="Node2D" parent="."]
 script = ExtResource("7_h36c2")
+
+[node name="Button" type="Button" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1587.0
+offset_top = 968.0
+offset_right = 1871.0
+offset_bottom = 1055.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_fonts/font = ExtResource("8_y2327")
+theme_override_font_sizes/font_size = 60
+text = "Skip"

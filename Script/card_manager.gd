@@ -3,6 +3,9 @@ extends Node2D
 const COLLISIONMASK_CARD = 1
 const COLLISIONMASK_CARD_SLOT = 2
 const DEFAULT_CARD_MOVE_SPEED = 0.1
+const DEFAULT_CARD_SCALE = 0.2
+const CARD_BIGER_SCALE = 0.22
+const CARD_SMALLER_SCALE = 0.2
 
 var card_being_dragged
 var screen_size
@@ -24,13 +27,16 @@ func _process(delta: float) -> void:
 
 func start_drag(card):
 	card_being_dragged = card
-	card.scale = Vector2(0.2,0.2)
+	card.scale = Vector2(DEFAULT_CARD_SCALE,DEFAULT_CARD_SCALE)
 
 func finish_drag():
 	print("Runing")
-	card_being_dragged.scale = Vector2(0.21,0.21)
+	card_being_dragged.scale = Vector2(CARD_BIGER_SCALE,CARD_BIGER_SCALE)
 	var card_slot_found = raycast_check_for_card_slot()
 	if card_slot_found and not card_slot_found.card_in_slot:
+		#card dropped in card slot
+		card_being_dragged.scale = Vector2(CARD_SMALLER_SCALE,CARD_SMALLER_SCALE)
+		card_being_dragged.card_slot_card_is_in = card_slot_found
 		player_hand_reference.remove_card_from_hand(card_being_dragged)
 		#card dropped in empty card slot
 		card_being_dragged.position = card_slot_found.position
@@ -54,21 +60,22 @@ func on_hovered_over_card(card) :
 	hightlight_card(card,true)
 
 func on_hovered_off_card(card) :
-	if !card_being_dragged:
-		hightlight_card(card,false)
-		# check if hovered off card straight on to another card
-		var new_card_horvered = raycast_check_for_card()
-		if new_card_horvered:
-			hightlight_card(new_card_horvered,true)
-		else :
-			is_hovering_on_card = false
+	#check if card is not in card slot and not being drag
+	if !card.card_slot_card_is_in && !card_being_dragged :
+			hightlight_card(card,false)
+			# check if hovered off card straight on to another card
+			var new_card_horvered = raycast_check_for_card()
+			if new_card_horvered:
+				hightlight_card(new_card_horvered,true)
+			else :
+				is_hovering_on_card = false
 
 func hightlight_card(card, hovered):
 	if hovered:
-		card.scale = Vector2(0.21,0.21)
+		card.scale = Vector2(CARD_BIGER_SCALE,CARD_BIGER_SCALE)
 		card.z_index = 2
 	else :
-		card.scale = Vector2(0.2,0.2)
+		card.scale = Vector2(CARD_BIGER_SCALE,CARD_BIGER_SCALE)
 		card.z_index = 1
  
 func raycast_check_for_card_slot():

@@ -1,87 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://u44cll7bp3s0"]
+[gd_scene load_steps=9 format=3 uid="uid://u44cll7bp3s0"]
 
 [ext_resource type="Script" path="res://Script/card.gd" id="1_xlue2"]
 [ext_resource type="Texture2D" uid="uid://bifb6xgm88j88" path="res://Asset/IMG/FileInfectorCard.png" id="2_blj0v"]
 [ext_resource type="Texture2D" uid="uid://dxnhtc0mraow3" path="res://Asset/IMG/29.png" id="2_qjb33"]
+[ext_resource type="FontFile" uid="uid://da278r8wxdci8" path="res://Asset/Font/rainyhearts.ttf" id="4_08fke"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p405s"]
-size = Vector2(605, 1055)
-
-[sub_resource type="Animation" id="Animation_anro0"]
-resource_name = "card_filp"
-step = 0.01
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("CPU:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.16, 0.2),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Color(1, 0.0588235, 0.0588235, 0), Color(1, 0.0588235, 0.0588235, 0), Color(1, 0.0588235, 0.0588235, 1)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Ingre:modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.16, 0.2),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Color(1, 0.0588235, 0.0588235, 0), Color(1, 0.0588235, 0.0588235, 0), Color(1, 0.0588235, 0.0588235, 1)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("CardBackImage:scale")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector2(1.08581, 1.04165), Vector2(0.1, 1), Vector2(1, 1)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("CardBackImage:z_index")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [0, -1]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("CardImg:z_index")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [-1, 0]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("CardImg:scale")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector2(1, 1), Vector2(0.1, 1), Vector2(1, 1)]
-}
+size = Vector2(605, 1095)
 
 [sub_resource type="Animation" id="Animation_7pqhs"]
 length = 0.001
@@ -158,6 +83,82 @@ tracks/5/keys = {
 "values": [Vector2(1, 1)]
 }
 
+[sub_resource type="Animation" id="Animation_anro0"]
+resource_name = "card_filp"
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CPU:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.16, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 0.0588235, 0.0588235, 0), Color(1, 0.0588235, 0.0588235, 0), Color(1, 0.0588235, 0.0588235, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Ingre:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.16, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 0.0588235, 0.0588235, 0), Color(1, 0.0588235, 0.0588235, 0), Color(1, 0.0588235, 0.0588235, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CardBackImage:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.850423, 0.815836), Vector2(0.1, 0.76), Vector2(0.85, 0.76)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CardBackImage:z_index")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, -1]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("CardImg:z_index")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [-1, 0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("CardImg:scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.765392, 0.765392), Vector2(0.1, 0.76), Vector2(0.85, 0.76)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_evirq"]
 _data = {
 "RESET": SubResource("Animation_7pqhs"),
@@ -170,38 +171,41 @@ scale = Vector2(0.2, 0.2)
 script = ExtResource("1_xlue2")
 
 [node name="CardBackImage" type="Sprite2D" parent="."]
-position = Vector2(-5.00009, 17.4901)
+position = Vector2(-7.49906, 10.8394)
 scale = Vector2(1.08581, 1.04165)
 texture = ExtResource("2_qjb33")
 
 [node name="CardImg" type="Sprite2D" parent="."]
 z_index = -1
+position = Vector2(-11.25, -3.53598)
 texture = ExtResource("2_blj0v")
 
 [node name="Area2D" type="Area2D" parent="."]
-position = Vector2(0, 5.72205e-06)
+position = Vector2(-9.53674e-07, 1.90735e-06)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(2.5, 0)
-scale = Vector2(1, 1)
+position = Vector2(-7.49951, 2.5)
+scale = Vector2(0.999999, 0.999999)
 shape = SubResource("RectangleShape2D_p405s")
 
 [node name="CPU" type="RichTextLabel" parent="."]
 modulate = Color(1, 0.0588235, 0.0588235, 0)
-offset_left = 160.0
-offset_top = -560.0
-offset_right = 268.0
-offset_bottom = -520.0
-scale = Vector2(10, 10)
+offset_left = 110.0
+offset_top = -415.0
+offset_right = 218.0
+offset_bottom = -375.0
+scale = Vector2(7, 7)
+theme_override_fonts/normal_font = ExtResource("4_08fke")
 text = "0"
 
 [node name="Ingre" type="RichTextLabel" parent="."]
 modulate = Color(1, 0.0588235, 0.0588235, 0)
-offset_left = -280.0
-offset_top = 320.0
-offset_right = -152.0
-offset_bottom = 357.0
-scale = Vector2(10, 10)
+offset_left = -210.0
+offset_top = 245.0
+offset_right = -82.0
+offset_bottom = 282.0
+scale = Vector2(7, 7)
+theme_override_fonts/normal_font = ExtResource("4_08fke")
 text = "0"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

@@ -11,7 +11,7 @@ scale = Vector2(0.95, 1.52)
 script = ExtResource("1_t0bik")
 
 [node name="CardSlotImage" type="Sprite2D" parent="."]
-scale = Vector2(-0.116925, -0.0944643)
+scale = Vector2(0.117, 0.094)
 texture = ExtResource("2_2ga6x")
 
 [node name="Area2D" type="Area2D" parent="."]
@@ -19,6 +19,6 @@ collision_layer = 2
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(-5.01934e-07, -0.328948)
+position = Vector2(0, 0.657895)
 scale = Vector2(1.02116, 0.951358)
 shape = SubResource("RectangleShape2D_3ut7g")
