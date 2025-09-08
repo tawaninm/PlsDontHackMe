@@ -2,19 +2,28 @@ extends Node2D
 
 const CARD_SCENE_PATH = "res://Scene/card.tscn"
 const CARD_DRAW_SPEED = 0.2
+const STARTING_HAND_SIZE = 5
 
-var player_deck = ["FileInfector","VirusAttack","DdosAttack","AntiVirus"]
-var card_database_reference 
-
+var player_deck = ["FileInfector","VirusAttack","DdosAttack","AntiVirus","VirusAttack","VirusAttack","VirusAttack"]
+var card_database_reference
+var draw_card_this_turn = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	player_deck.shuffle()
 	$RichTextLabel.text = str(player_deck.size())
 	card_database_reference = preload("res://Script/CardDatabase.gd")
+	await $"../Playerhand".ready 
+	for i in range(STARTING_HAND_SIZE):
+		draw_card()
+		draw_card_this_turn = false
 
 
 func draw_card():
+	if draw_card_this_turn:
+		return
+
+	draw_card_this_turn = true
 	var card_drawn_name = player_deck[0]
 	player_deck.erase(card_drawn_name)
 	

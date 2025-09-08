@@ -36,6 +36,7 @@ func finish_drag():
 	if card_slot_found and not card_slot_found.card_in_slot:
 		#card dropped in card slot
 		card_being_dragged.scale = Vector2(CARD_SMALLER_SCALE,CARD_SMALLER_SCALE)
+		card_being_dragged.z_index = -1
 		card_being_dragged.card_slot_card_is_in = card_slot_found
 		player_hand_reference.remove_card_from_hand(card_being_dragged)
 		#card dropped in empty card slot
