@@ -39,6 +39,7 @@ func draw_card():
 	new_card.get_node("CardImg").texture = load(card_image_path)
 	new_card.get_node("CPU").text = str(card_database_reference.CARDS[card_drawn_name][0])
 	new_card.get_node("Ingre").text = str(card_database_reference.CARDS[card_drawn_name][1])
+	new_card.card_type = card_database_reference.CARDS[card_drawn_name][2]
 	$"../CardManager".add_child(new_card)
 	new_card.name = "card"
 	$"../Playerhand".add_card_to_hand(new_card, CARD_DRAW_SPEED)

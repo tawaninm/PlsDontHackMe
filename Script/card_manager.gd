@@ -11,6 +11,7 @@ var card_being_dragged
 var screen_size
 var is_hovering_on_card
 var player_hand_reference 
+var played_Magis_card_this_turn = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -34,17 +35,22 @@ func finish_drag():
 	card_being_dragged.scale = Vector2(CARD_BIGER_SCALE,CARD_BIGER_SCALE)
 	var card_slot_found = raycast_check_for_card_slot()
 	if card_slot_found and not card_slot_found.card_in_slot:
-		#card dropped in card slot
-		card_being_dragged.scale = Vector2(CARD_SMALLER_SCALE,CARD_SMALLER_SCALE)
-		card_being_dragged.z_index = -1
-		card_being_dragged.card_slot_card_is_in = card_slot_found
-		player_hand_reference.remove_card_from_hand(card_being_dragged)
-		#card dropped in empty card slot
-		card_being_dragged.position = card_slot_found.position
-		card_being_dragged.get_node("Area2D/CollisionShape2D").disabled = true
-		card_slot_found.card_in_slot = true
-	else :
-		player_hand_reference.add_card_to_hand(card_being_dragged, DEFAULT_CARD_MOVE_SPEED)
+		#if the card can be placed in this slot
+		if card_being_dragged.card_type == card_slot_found.card_slot_type:
+			if !played_Magis_card_this_turn:
+				#card dropped in card slot
+				card_being_dragged.scale = Vector2(CARD_SMALLER_SCALE,CARD_SMALLER_SCALE)
+				card_being_dragged.z_index = -1
+				is_hovering_on_card = false
+				card_being_dragged.card_slot_card_is_in = card_slot_found
+				player_hand_reference.remove_card_from_hand(card_being_dragged)
+				#card dropped in empty card slot
+				card_being_dragged.position = card_slot_found.position
+				card_being_dragged.get_node("Area2D/CollisionShape2D").disabled = true
+				card_slot_found.card_in_slot = true
+				card_being_dragged = null
+				return
+	player_hand_reference.add_card_to_hand(card_being_dragged, DEFAULT_CARD_MOVE_SPEED)
 	card_being_dragged = null
 
 func connect_card_signals(card):

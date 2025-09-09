@@ -1,11 +1,12 @@
-[gd_scene load_steps=10 format=3 uid="uid://bbjh5jh5bs1t5"]
+[gd_scene load_steps=11 format=3 uid="uid://bbjh5jh5bs1t5"]
 
 [ext_resource type="Script" path="res://Script/card_manager.gd" id="1_56fl5"]
 [ext_resource type="Texture2D" uid="uid://bxkyymwn3fc4p" path="res://Asset/IMG/FiledBack.png" id="1_a84f0"]
 [ext_resource type="Script" path="res://Script/playerhand.gd" id="3_iqutw"]
-[ext_resource type="PackedScene" uid="uid://d3thw7ewxb7wj" path="res://Scene/cardslot.tscn" id="3_xtasv"]
+[ext_resource type="PackedScene" uid="uid://d3thw7ewxb7wj" path="res://Scene/Cardslot.tscn" id="3_xtasv"]
 [ext_resource type="Texture2D" uid="uid://dxnhtc0mraow3" path="res://Asset/IMG/29.png" id="4_i0fp1"]
 [ext_resource type="Script" path="res://Script/deck.gd" id="4_lib1h"]
+[ext_resource type="PackedScene" uid="uid://wsx704nab2tp" path="res://Scene/EnemyCardslot.tscn" id="6_oyyt0"]
 [ext_resource type="Script" path="res://Script/input_manager.gd" id="7_h36c2"]
 [ext_resource type="FontFile" uid="uid://da278r8wxdci8" path="res://Asset/Font/rainyhearts.ttf" id="8_y2327"]
 
@@ -15,7 +16,7 @@ size = Vector2(743.998, 1402)
 [node name="Main" type="Node2D"]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-z_index = -2
+z_index = -4
 position = Vector2(960, 540)
 scale = Vector2(0.881092, 0.881092)
 texture = ExtResource("1_a84f0")
@@ -51,81 +52,86 @@ metadata/_edit_use_anchors_ = true
 [node name="CardManager" type="Node2D" parent="."]
 script = ExtResource("1_56fl5")
 
-[node name="CardSlotPlayer1" type="Node" parent="."]
+[node name="CardSlotPlayer1" type="Node2D" parent="."]
 
 [node name="Cardslot" parent="CardSlotPlayer1" instance=ExtResource("3_xtasv")]
+z_index = -4
 position = Vector2(700, 691)
 scale = Vector2(1, 1.52)
 
 [node name="Cardslot2" parent="CardSlotPlayer1" instance=ExtResource("3_xtasv")]
+z_index = -4
 position = Vector2(825, 691)
 scale = Vector2(1, 1.52)
 
 [node name="Cardslot3" parent="CardSlotPlayer1" instance=ExtResource("3_xtasv")]
+z_index = -4
 position = Vector2(960, 691)
 scale = Vector2(1, 1.52)
 
 [node name="Cardslot4" parent="CardSlotPlayer1" instance=ExtResource("3_xtasv")]
+z_index = -4
 position = Vector2(1085, 691)
 scale = Vector2(1, 1.52)
 
 [node name="Cardslot5" parent="CardSlotPlayer1" instance=ExtResource("3_xtasv")]
+z_index = -4
 position = Vector2(1220, 691)
 scale = Vector2(1, 1.52)
 
-[node name="CardSlotPlayer2" type="Node" parent="."]
+[node name="CardSlotPlayer2" type="Node2D" parent="."]
 
-[node name="Cardslot" parent="CardSlotPlayer2" instance=ExtResource("3_xtasv")]
+[node name="Cardslot6" parent="CardSlotPlayer2" instance=ExtResource("6_oyyt0")]
+z_index = -4
 position = Vector2(1075, 263)
 rotation = 0.523599
-scale = Vector2(1, 1.52)
+scale = Vector2(0.95, 1.52)
 
-[node name="Cardslot2" parent="CardSlotPlayer2" instance=ExtResource("3_xtasv")]
+[node name="Cardslot7" parent="CardSlotPlayer2" instance=ExtResource("6_oyyt0")]
+z_index = -4
 position = Vector2(1167, 318)
 rotation = 0.523599
-scale = Vector2(1, 1.52)
+scale = Vector2(0.95, 1.52)
 
-[node name="Cardslot3" parent="CardSlotPlayer2" instance=ExtResource("3_xtasv")]
+[node name="Cardslot8" parent="CardSlotPlayer2" instance=ExtResource("6_oyyt0")]
+z_index = -4
 position = Vector2(1255, 369)
 rotation = 0.523599
-scale = Vector2(1, 1.52)
+scale = Vector2(0.95, 1.52)
 
-[node name="Cardslot4" parent="CardSlotPlayer2" instance=ExtResource("3_xtasv")]
+[node name="Cardslot9" parent="CardSlotPlayer2" instance=ExtResource("6_oyyt0")]
+z_index = -4
 position = Vector2(1343, 417)
 rotation = 0.523599
-scale = Vector2(1, 1.52)
+scale = Vector2(0.95, 1.52)
 
-[node name="Cardslot5" parent="CardSlotPlayer2" instance=ExtResource("3_xtasv")]
+[node name="Cardslot10" parent="CardSlotPlayer2" instance=ExtResource("6_oyyt0")]
+z_index = -4
 position = Vector2(1431, 465)
 rotation = 0.523599
-scale = Vector2(1, 1.52)
+scale = Vector2(0.95, 1.52)
 
-[node name="CardSlotPlayer3" type="Node" parent="."]
+[node name="CardSlotPlayer3" type="Node2D" parent="."]
 
-[node name="Cardslot" parent="CardSlotPlayer3" instance=ExtResource("3_xtasv")]
+[node name="Cardslot6" parent="CardSlotPlayer3" instance=ExtResource("6_oyyt0")]
 position = Vector2(493, 467)
 rotation = -0.523599
-scale = Vector2(1, 1.52)
 
-[node name="Cardslot2" parent="CardSlotPlayer3" instance=ExtResource("3_xtasv")]
+[node name="Cardslot7" parent="CardSlotPlayer3" instance=ExtResource("6_oyyt0")]
 position = Vector2(585, 414)
 rotation = -0.523599
-scale = Vector2(1, 1.52)
 
-[node name="Cardslot3" parent="CardSlotPlayer3" instance=ExtResource("3_xtasv")]
+[node name="Cardslot8" parent="CardSlotPlayer3" instance=ExtResource("6_oyyt0")]
 position = Vector2(675, 365)
 rotation = -0.523599
-scale = Vector2(1, 1.52)
 
-[node name="Cardslot4" parent="CardSlotPlayer3" instance=ExtResource("3_xtasv")]
-position = Vector2(766, 314)
+[node name="Cardslot9" parent="CardSlotPlayer3" instance=ExtResource("6_oyyt0")]
+position = Vector2(765.955, 314)
 rotation = -0.523599
-scale = Vector2(1, 1.52)
 
-[node name="Cardslot5" parent="CardSlotPlayer3" instance=ExtResource("3_xtasv")]
+[node name="Cardslot10" parent="CardSlotPlayer3" instance=ExtResource("6_oyyt0")]
 position = Vector2(859, 255)
 rotation = -0.523599
-scale = Vector2(1, 1.52)
 
 [node name="Playerhand" type="Node2D" parent="."]
 script = ExtResource("3_iqutw")

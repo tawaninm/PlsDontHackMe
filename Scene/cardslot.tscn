@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://d3thw7ewxb7wj"]
 
-[ext_resource type="Script" path="res://Script/cardslot.gd" id="1_t0bik"]
+[ext_resource type="Script" path="res://Script/MagicCardSlot.gd" id="1_t0bik"]
 [ext_resource type="Texture2D" uid="uid://dne6am0l02fqb" path="res://Asset/fieduseCard.png" id="2_2ga6x"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3ut7g"]
