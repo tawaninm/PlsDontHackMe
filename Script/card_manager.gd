@@ -13,7 +13,7 @@ func _ready() -> void:
 	player_hand_reference = $"../PlayerHand"
 	$"../Input".connect("left_mouse_button_clicked", on_left_click)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if card_being_dragged:
 		var mouse_pos = get_global_mouse_position()
 		card_being_dragged.position = Vector2(

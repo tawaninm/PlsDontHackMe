@@ -1,0 +1,97 @@
+[gd_scene load_steps=12 format=3 uid="uid://rxtwa7bv8jew"]
+
+[ext_resource type="Texture2D" uid="uid://rjfubhmcn0o6" path="res://Asset/Main Menu buttons/PLS DONT HACK ME.png" id="1_xt047"]
+[ext_resource type="Texture2D" uid="uid://dbp3m6f77vtuu" path="res://Asset/Main Menu buttons/PLS DONT HACK ME buttons-Photoroom play.png" id="2_ahlej"]
+[ext_resource type="Texture2D" uid="uid://j81gxvs0xkm3" path="res://Asset/Main Menu buttons/PLS DONT HACK ME buttons-Photoroom settings.png" id="3_4r2h4"]
+[ext_resource type="Texture2D" uid="uid://d4fbfi3opow5l" path="res://Asset/Main Menu buttons/PLS DONT HACK ME buttons-Photoroom scripts.png" id="4_fvn5p"]
+[ext_resource type="Texture2D" uid="uid://d0w6t61vq0wof" path="res://Asset/Main Menu buttons/PLS DONT HACK ME buttons-Photoroom(1) quit.png" id="5_67yso"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hytm2"]
+texture = ExtResource("1_xt047")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ahlej"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_khtsr"]
+texture = ExtResource("2_ahlej")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ek8gv"]
+texture = ExtResource("3_4r2h4")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_otrw3"]
+texture = ExtResource("4_fvn5p")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5je63"]
+texture = ExtResource("5_67yso")
+
+[node name="MainMenu" type="Node2D"]
+
+[node name="Panel" type="Panel" parent="."]
+offset_right = 1152.0
+offset_bottom = 648.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_hytm2")
+
+[node name="Start" type="Button" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 460.0
+offset_top = 230.0
+offset_right = 673.0
+offset_bottom = 306.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 0)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 0)
+theme_override_colors/icon_disabled_color = Color(0, 0, 0, 0)
+theme_override_colors/icon_hover_pressed_color = Color(0, 0, 0, 0)
+theme_override_colors/icon_hover_color = Color(0, 0, 0, 0)
+theme_override_colors/icon_pressed_color = Color(0, 0, 0, 0)
+theme_override_colors/icon_focus_color = Color(0, 0, 0, 0)
+theme_override_colors/icon_normal_color = Color(0, 0, 0, 0)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0)
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_ahlej")
+theme_override_styles/normal = SubResource("StyleBoxTexture_khtsr")
+
+[node name="Settings" type="Button" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 417.0
+offset_top = 334.0
+offset_right = 726.0
+offset_bottom = 406.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_styles/normal = SubResource("StyleBoxTexture_ek8gv")
+
+[node name="Scripts" type="Button" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 435.0
+offset_top = 446.0
+offset_right = 710.0
+offset_bottom = 508.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_styles/normal = SubResource("StyleBoxTexture_otrw3")
+
+[node name="Quit" type="Button" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 490.0
+offset_top = 544.0
+offset_right = 645.0
+offset_bottom = 607.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_styles/normal = SubResource("StyleBoxTexture_5je63")
