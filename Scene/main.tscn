@@ -85,31 +85,26 @@ scale = Vector2(1, 1.52)
 z_index = -4
 position = Vector2(1075, 263)
 rotation = 0.523599
-scale = Vector2(0.95, 1.52)
 
 [node name="Cardslot7" parent="CardSlotPlayer2" instance=ExtResource("6_oyyt0")]
 z_index = -4
 position = Vector2(1167, 318)
 rotation = 0.523599
-scale = Vector2(0.95, 1.52)
 
 [node name="Cardslot8" parent="CardSlotPlayer2" instance=ExtResource("6_oyyt0")]
 z_index = -4
 position = Vector2(1255, 369)
 rotation = 0.523599
-scale = Vector2(0.95, 1.52)
 
 [node name="Cardslot9" parent="CardSlotPlayer2" instance=ExtResource("6_oyyt0")]
 z_index = -4
 position = Vector2(1343, 417)
 rotation = 0.523599
-scale = Vector2(0.95, 1.52)
 
 [node name="Cardslot10" parent="CardSlotPlayer2" instance=ExtResource("6_oyyt0")]
 z_index = -4
 position = Vector2(1431, 465)
 rotation = 0.523599
-scale = Vector2(0.95, 1.52)
 
 [node name="CardSlotPlayer3" type="Node2D" parent="."]
 
