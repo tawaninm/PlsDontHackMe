@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://bbjh5jh5bs1t5"]
+[gd_scene load_steps=14 format=3 uid="uid://bbjh5jh5bs1t5"]
 
 [ext_resource type="Script" path="res://Script/card_manager.gd" id="1_56fl5"]
 [ext_resource type="Texture2D" uid="uid://bxkyymwn3fc4p" path="res://Asset/IMG/FiledBack.png" id="1_a84f0"]
+[ext_resource type="Texture2D" uid="uid://b72sdy3wkfdq6" path="res://Asset/UI/10.png" id="1_lk7oc"]
 [ext_resource type="Script" path="res://Script/playerhand.gd" id="3_iqutw"]
 [ext_resource type="PackedScene" uid="uid://d3thw7ewxb7wj" path="res://Scene/Cardslot.tscn" id="3_xtasv"]
 [ext_resource type="Texture2D" uid="uid://dxnhtc0mraow3" path="res://Asset/IMG/29.png" id="4_i0fp1"]
@@ -9,11 +10,18 @@
 [ext_resource type="PackedScene" uid="uid://wsx704nab2tp" path="res://Scene/EnemyCardslot.tscn" id="6_oyyt0"]
 [ext_resource type="Script" path="res://Script/input_manager.gd" id="7_h36c2"]
 [ext_resource type="FontFile" uid="uid://da278r8wxdci8" path="res://Asset/Font/rainyhearts.ttf" id="8_y2327"]
+[ext_resource type="Texture2D" uid="uid://sguluvh8i0kk" path="res://Asset/IMG/28.png" id="11_iw22w"]
+[ext_resource type="Texture2D" uid="uid://cm632sgg7c8pb" path="res://Asset/IMG/27.png" id="12_053pa"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ixwm3"]
 size = Vector2(743.998, 1402)
 
 [node name="Main" type="Node2D"]
+
+[node name="Background" type="Sprite2D" parent="."]
+z_index = -4
+position = Vector2(961, 539)
+texture = ExtResource("1_lk7oc")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = -4
@@ -152,3 +160,55 @@ theme_override_colors/font_color = Color(1, 0, 0, 1)
 theme_override_fonts/font = ExtResource("8_y2327")
 theme_override_font_sizes/font_size = 60
 text = "Skip"
+
+[node name="PointPanelP1" type="Sprite2D" parent="."]
+position = Vector2(354.375, 930)
+scale = Vector2(0.289313, 0.266321)
+texture = ExtResource("11_iw22w")
+
+[node name="P1PC" type="Sprite2D" parent="."]
+position = Vector2(109, 961)
+scale = Vector2(0.1875, 0.1875)
+texture = ExtResource("12_053pa")
+
+[node name="Integrity  P1" type="Label" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 243.0
+offset_top = 836.0
+offset_right = 555.0
+offset_bottom = 917.0
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("8_y2327")
+theme_override_font_sizes/font_size = 45
+text = "Integrity   0
+"
+
+[node name="Integrity  P2" type="Label" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 243.0
+offset_top = 911.0
+offset_right = 555.0
+offset_bottom = 992.0
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("8_y2327")
+theme_override_font_sizes/font_size = 45
+text = "Bandwidth 0
+"
+
+[node name="Integrity  P3" type="Label" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 243.0
+offset_top = 988.0
+offset_right = 555.0
+offset_bottom = 1069.0
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("8_y2327")
+theme_override_font_sizes/font_size = 45
+text = "Packet Loss 0
+"
