@@ -95,7 +95,7 @@ func raycast_check_for_card_slot():
 	if result.size() > 0:
 		return result[0].collider.get_parent()
 	return null
-#move card
+
 func raycast_check_for_card():
 	var space_state = get_world_2d().direct_space_state
 	var parameters = PhysicsPointQueryParameters2D.new()
