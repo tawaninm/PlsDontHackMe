@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://d3thw7ewxb7wj" path="res://Scene/Cardslot.tscn" id="3_xtasv"]
 [ext_resource type="Texture2D" uid="uid://dxnhtc0mraow3" path="res://Asset/IMG/29.png" id="4_i0fp1"]
 [ext_resource type="Script" path="res://Script/deck.gd" id="4_lib1h"]
-[ext_resource type="PackedScene" uid="uid://wsx704nab2tp" path="res://Scene/EnemyCardslot.tscn" id="6_oyyt0"]
+[ext_resource type="PackedScene" path="res://Scene/EnemyCardslot.tscn" id="6_oyyt0"]
 [ext_resource type="Script" path="res://Script/input_manager.gd" id="7_h36c2"]
 [ext_resource type="FontFile" uid="uid://da278r8wxdci8" path="res://Asset/Font/rainyhearts.ttf" id="8_y2327"]
 [ext_resource type="Texture2D" uid="uid://sguluvh8i0kk" path="res://Asset/IMG/28.png" id="11_iw22w"]
