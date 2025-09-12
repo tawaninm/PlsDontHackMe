@@ -1,5 +1,6 @@
-[gd_scene load_steps=12 format=3 uid="uid://rxtwa7bv8jew"]
+[gd_scene load_steps=13 format=3 uid="uid://rxtwa7bv8jew"]
 
+[ext_resource type="Script" uid="uid://tqs2373b4svm" path="res://Scene/Main_Control.gd" id="1_4r2h4"]
 [ext_resource type="Texture2D" uid="uid://rjfubhmcn0o6" path="res://Asset/Main Menu buttons/PLS DONT HACK ME.png" id="1_xt047"]
 [ext_resource type="Texture2D" uid="uid://dbp3m6f77vtuu" path="res://Asset/Main Menu buttons/PLS DONT HACK ME buttons-Photoroom play.png" id="2_ahlej"]
 [ext_resource type="Texture2D" uid="uid://j81gxvs0xkm3" path="res://Asset/Main Menu buttons/PLS DONT HACK ME buttons-Photoroom settings.png" id="3_4r2h4"]
@@ -25,21 +26,33 @@ texture = ExtResource("5_67yso")
 
 [node name="MainMenu" type="Node2D"]
 
-[node name="Panel" type="Panel" parent="."]
-offset_right = 1152.0
-offset_bottom = 648.0
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 460.0
+offset_top = 230.0
+offset_right = 500.0
+offset_bottom = 270.0
+script = ExtResource("1_4r2h4")
+
+[node name="Panel" type="Panel" parent="Control"]
+offset_left = -460.0
+offset_top = -230.0
+offset_right = 692.0
+offset_bottom = 418.0
 theme_override_styles/panel = SubResource("StyleBoxTexture_hytm2")
 
-[node name="Start" type="Button" parent="."]
+[node name="Start" type="Button" parent="Control"]
+layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 460.0
-offset_top = 230.0
-offset_right = 673.0
-offset_bottom = 306.0
+offset_left = -40.0
+offset_top = -40.0
+offset_right = 173.0
+offset_bottom = 36.0
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_colors/font_disabled_color = Color(0, 0, 0, 0)
@@ -54,44 +67,52 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 0)
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_ahlej")
 theme_override_styles/normal = SubResource("StyleBoxTexture_khtsr")
 
-[node name="Settings" type="Button" parent="."]
+[node name="Settings" type="Button" parent="Control"]
+layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 417.0
-offset_top = 334.0
-offset_right = 726.0
-offset_bottom = 406.0
+offset_left = -83.0
+offset_top = 64.0
+offset_right = 226.0
+offset_bottom = 136.0
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_styles/normal = SubResource("StyleBoxTexture_ek8gv")
 
-[node name="Scripts" type="Button" parent="."]
+[node name="Scripts" type="Button" parent="Control"]
+layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 435.0
-offset_top = 446.0
-offset_right = 710.0
-offset_bottom = 508.0
+offset_left = -65.0
+offset_top = 176.0
+offset_right = 210.0
+offset_bottom = 238.0
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_styles/normal = SubResource("StyleBoxTexture_otrw3")
 
-[node name="Quit" type="Button" parent="."]
+[node name="Quit" type="Button" parent="Control"]
+layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 490.0
-offset_top = 544.0
-offset_right = 645.0
-offset_bottom = 607.0
+offset_left = -10.0
+offset_top = 274.0
+offset_right = 145.0
+offset_bottom = 337.0
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_styles/normal = SubResource("StyleBoxTexture_5je63")
+
+[connection signal="pressed" from="Control/Start" to="Control" method="_on_start_pressed"]
+[connection signal="pressed" from="Control/Settings" to="Control" method="_on_settings_pressed"]
+[connection signal="pressed" from="Control/Scripts" to="Control" method="_on_scripts_pressed"]
+[connection signal="pressed" from="Control/Quit" to="Control" method="_on_quit_pressed"]

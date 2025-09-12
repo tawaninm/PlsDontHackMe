@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://d3thw7ewxb7wj" path="res://Scene/cardslot.tscn" id="3_xtasv"]
 [ext_resource type="Script" uid="uid://1kojqqmyjx8e" path="res://Script/deck.gd" id="4_1xcnr"]
 [ext_resource type="Texture2D" uid="uid://dxnhtc0mraow3" path="res://Asset/IMG/29.png" id="4_2wwxx"]
-[ext_resource type="Script" uid="uid://ba0ysbiwv3o4a" path="res://Script/input.gd" id="6_ow1sv"]
+[ext_resource type="Script" path="res://Script/input.gd" id="6_ow1sv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3amdw"]
 size = Vector2(96, 166)
