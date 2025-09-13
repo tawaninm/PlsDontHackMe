@@ -1,16 +1,64 @@
-[gd_scene load_steps=13 format=3 uid="uid://rxtwa7bv8jew"]
+[gd_scene load_steps=20 format=3 uid="uid://rxtwa7bv8jew"]
 
-[ext_resource type="Script" uid="uid://tqs2373b4svm" path="res://Scene/Main_Control.gd" id="1_4r2h4"]
-[ext_resource type="Texture2D" uid="uid://rjfubhmcn0o6" path="res://Asset/Main Menu buttons/PLS DONT HACK ME.png" id="1_xt047"]
+[ext_resource type="Script" uid="uid://tqs2373b4svm" path="res://Script/Main_Control.gd" id="1_4r2h4"]
+[ext_resource type="Texture2D" uid="uid://dnqyl4wljs1g2" path="res://Asset/Main Menu buttons/PLS_DONT_HACK_ME__1_-removebg-preview.png" id="2_40btf"]
 [ext_resource type="Texture2D" uid="uid://dbp3m6f77vtuu" path="res://Asset/Main Menu buttons/PLS DONT HACK ME buttons-Photoroom play.png" id="2_ahlej"]
 [ext_resource type="Texture2D" uid="uid://j81gxvs0xkm3" path="res://Asset/Main Menu buttons/PLS DONT HACK ME buttons-Photoroom settings.png" id="3_4r2h4"]
+[ext_resource type="Script" uid="uid://olw6qctx6yme" path="res://Script/sign.gd" id="3_khtsr"]
 [ext_resource type="Texture2D" uid="uid://d4fbfi3opow5l" path="res://Asset/Main Menu buttons/PLS DONT HACK ME buttons-Photoroom scripts.png" id="4_fvn5p"]
 [ext_resource type="Texture2D" uid="uid://d0w6t61vq0wof" path="res://Asset/Main Menu buttons/PLS DONT HACK ME buttons-Photoroom(1) quit.png" id="5_67yso"]
+[ext_resource type="AudioStream" uid="uid://di460k2yf5dts" path="res://Asset/Music/copy_293F5990-BD1B-41E2-8850-E7F84B7A4F78 (online-audio-converter.com).mp3" id="7_67yso"]
+[ext_resource type="Script" uid="uid://dfq1xmx24s2dc" path="res://Script/main_menu_music.gd" id="8_40btf"]
+[ext_resource type="Texture2D" uid="uid://dnt86bc34qltd" path="res://Asset/Main Menu buttons/10.png" id="8_67yso"]
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hytm2"]
-texture = ExtResource("1_xt047")
+[sub_resource type="Animation" id="Animation_40btf"]
+resource_name = "Flicker"
+length = 20.0
+loop_mode = 1
+step = 0.03
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.090909, 0.848485, 1.04848, 1.14848, 1.18182, 1.24242, 1.30303, 1.60606, 1.66667, 1.81515, 2.05458, 2.17579, 2.297, 2.38791, 2.60003, 2.69094, 2.72124, 3.01257, 3.13379, 3.255, 3.34591, 3.55803, 3.64894, 3.67924, 4.34009, 4.4613, 4.58251, 4.67342, 4.88554, 4.97645, 5.00675, 5.0762, 5.33333, 5.36364, 5.60868, 5.64016, 5.66062, 5.68109, 5.76137, 8.2767, 8.39791, 8.51913, 8.61003, 8.82216, 8.91306, 8.94337, 9.66759, 9.7675, 9.84952, 11.0135, 11.1347, 11.2559, 11.3468, 11.5589, 11.6498, 11.6801, 11.8182, 12.1818, 12.697, 12.8182, 12.9394, 13.0606, 13.1515, 13.3636, 13.4545, 13.4848, 14.5455, 14.6667, 14.7879, 14.8788, 15.0909, 15.1818, 15.2121, 15.9091, 15.9697, 16.0168, 16.1083, 16.2727, 16.6364, 16.9697, 18.697),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(2.21, 0, 0, 1), Color(2.21, 0, 0, 1), Color(2.21, 0, 0, 1), Color(2.212, 0, 0, 0), Color(2.211, 0, 0, 1), Color(2.212, 0, 0, 0), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 1), Color(2.212, 0, 0, 0), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 0.97), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 0.95), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 0.95), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 0.97), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 0.95), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 0.95), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 0.97), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 0.95), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 0.95), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 1), Color(2.212, 0, 0, 0), Color(2.211, 0, 0, 1), Color(2.212, 0, 0, 0), Color(2.211, 0, 0, 1), Color(2.212, 0, 0, 0), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 0.97), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 0.95), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 0.95), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 1), Color(2.212, 0, 0, 0), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 0.97), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 0.95), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 0.95), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 0.97), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 0.97), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 0.95), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 0.95), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 0.97), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 0.95), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 0.95), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 1), Color(2.212, 0, 0, 0), Color(2.211, 0, 0, 1), Color(2.212, 0, 0, 0), Color(2.212, 0, 0, 0), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 1), Color(2.211, 0, 0, 0.95)]
+}
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ahlej"]
+[sub_resource type="Animation" id="Animation_khtsr"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(2.21, 0, 0, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ek8gv"]
+_data = {
+&"Flicker": SubResource("Animation_40btf"),
+&"RESET": SubResource("Animation_khtsr")
+}
+
+[sub_resource type="Environment" id="Environment_40btf"]
+background_mode = 3
+glow_enabled = true
+glow_intensity = 1.25
+glow_bloom = 0.2
+glow_hdr_threshold = 0.72
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_67yso"]
+texture = ExtResource("2_ahlej")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_khtsr"]
 texture = ExtResource("2_ahlej")
@@ -26,6 +74,28 @@ texture = ExtResource("5_67yso")
 
 [node name="MainMenu" type="Node2D"]
 
+[node name="Background" type="Node2D" parent="."]
+
+[node name="Back" type="Sprite2D" parent="Background"]
+position = Vector2(962, 542)
+texture = ExtResource("8_67yso")
+
+[node name="Sign" type="Sprite2D" parent="Background"]
+modulate = Color(2.21, 0, 0, 1)
+position = Vector2(790, 148)
+scale = Vector2(0.689565, 0.593)
+texture = ExtResource("2_40btf")
+script = ExtResource("3_khtsr")
+
+[node name="Sign Animation" type="AnimationPlayer" parent="Background/Sign"]
+libraries = {
+&"": SubResource("AnimationLibrary_ek8gv")
+}
+speed_scale = 0.8
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Background"]
+environment = SubResource("Environment_40btf")
+
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
@@ -35,26 +105,19 @@ offset_right = 500.0
 offset_bottom = 270.0
 script = ExtResource("1_4r2h4")
 
-[node name="Panel" type="Panel" parent="Control"]
-offset_left = -460.0
-offset_top = -230.0
-offset_right = 692.0
-offset_bottom = 418.0
-theme_override_styles/panel = SubResource("StyleBoxTexture_hytm2")
-
 [node name="Start" type="Button" parent="Control"]
 layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -40.0
-offset_top = -40.0
-offset_right = 173.0
-offset_bottom = 36.0
-grow_horizontal = 0
-grow_vertical = 0
+anchors_preset = -1
+anchor_left = -11.129
+anchor_top = -5.484
+anchor_right = 35.977
+anchor_bottom = 18.524
+offset_left = 779.16
+offset_top = 371.36
+offset_right = -806.88
+offset_bottom = -482.56
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_colors/font_disabled_color = Color(0, 0, 0, 0)
 theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 0)
 theme_override_colors/icon_disabled_color = Color(0, 0, 0, 0)
@@ -64,7 +127,7 @@ theme_override_colors/icon_pressed_color = Color(0, 0, 0, 0)
 theme_override_colors/icon_focus_color = Color(0, 0, 0, 0)
 theme_override_colors/icon_normal_color = Color(0, 0, 0, 0)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0)
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_ahlej")
+theme_override_styles/hover = SubResource("StyleBoxTexture_67yso")
 theme_override_styles/normal = SubResource("StyleBoxTexture_khtsr")
 
 [node name="Settings" type="Button" parent="Control"]
@@ -74,10 +137,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -83.0
-offset_top = 64.0
-offset_right = 226.0
-offset_bottom = 136.0
+offset_left = 232.0
+offset_top = 256.0
+offset_right = 664.6
+offset_bottom = 356.8
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_styles/normal = SubResource("StyleBoxTexture_ek8gv")
@@ -89,10 +152,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -65.0
-offset_top = 176.0
-offset_right = 210.0
-offset_bottom = 238.0
+offset_left = 254.0
+offset_top = 410.0
+offset_right = 640.4
+offset_bottom = 496.8
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_styles/normal = SubResource("StyleBoxTexture_otrw3")
@@ -104,13 +167,17 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -10.0
-offset_top = 274.0
-offset_right = 145.0
-offset_bottom = 337.0
+offset_left = 334.0
+offset_top = 561.0
+offset_right = 551.0
+offset_bottom = 649.2
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_styles/normal = SubResource("StyleBoxTexture_5je63")
+
+[node name="Main Menu Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_67yso")
+script = ExtResource("8_40btf")
 
 [connection signal="pressed" from="Control/Start" to="Control" method="_on_start_pressed"]
 [connection signal="pressed" from="Control/Settings" to="Control" method="_on_settings_pressed"]

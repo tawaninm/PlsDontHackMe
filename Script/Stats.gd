@@ -1,21 +1,20 @@
+
 extends Node
 
-# Player 1 stats
-var player1_int = 100
-var player1_bw = 20
-var player1_pl = 100
+func _ready() -> void:
+	var player1_name = "player1"
+	var player1_integrity = 10
+	var player1_bandwidth = 0
+	var player1_packetloss = 100
 
-# Player 2 stats
-var player2_int = 100
-var player2_bw = 20
-var player2_pl = 100
+	var player2_name = "player2"
+	var player2_integrity = 10
+	var player2_bandwidth = 0
+	var player2_packetloss = 100
 
-# Player 3 stats
-var player3_int = 100
-var player3_bw = 20
-var player3_pl = 100
+	var player3_name = "player3"
+	var player3_integrity = 10
+	var player3_bandwidth = 0
+	var player3_packetloss = 100
 
-func _ready():
-	print("Player 1 HP: " + player1_int)
-	print("Player 2 HP: " + player2_int)
-	print("Player 3 HP: " + player3_int)
+	$"../Player1Health".text = str(player1_integrity)

@@ -1,6 +1,6 @@
 extends Node2D
 
-const HAND_Y_POSITION = 500
+const HAND_Y_POSITION = 800
 const HAND_MARGIN = 100
 const CARD_WIDTH = 66
 var player_hand = []

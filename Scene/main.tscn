@@ -23,7 +23,7 @@ scale = Vector2(1, 1.52)
 script = ExtResource("3_r34rm")
 
 [node name="Deck" type="Node2D" parent="."]
-position = Vector2(600, 300)
+position = Vector2(935, 505)
 script = ExtResource("4_1xcnr")
 
 [node name="Sprite2D" type="Sprite2D" parent="Deck"]
