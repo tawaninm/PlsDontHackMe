@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://di460k2yf5dts"
+path="res://.godot/imported/copy_293F5990-BD1B-41E2-8850-E7F84B7A4F78 (online-audio-converter.com).mp3-0c1b234fd2284f7d8988f06bff7d7595.mp3str"
+
+[deps]
+
+source_file="res://Asset/Music/copy_293F5990-BD1B-41E2-8850-E7F84B7A4F78 (online-audio-converter.com).mp3"
+dest_files=["res://.godot/imported/copy_293F5990-BD1B-41E2-8850-E7F84B7A4F78 (online-audio-converter.com).mp3-0c1b234fd2284f7d8988f06bff7d7595.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
