@@ -6,12 +6,12 @@
 [ext_resource type="Script" uid="uid://ct77svuagfkh0" path="res://timer_control.gd" id="4_hx20k"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hx20k"]
-size = Vector2(77.125, 75.75)
+size = Vector2(122.281, 110.438)
 
 [node name="Prep Menu" type="Node2D"]
 
 [node name="Background" type="Sprite2D" parent="."]
-position = Vector2(962, 542)
+position = Vector2(960, 540)
 texture = ExtResource("1_fvspc")
 
 [node name="Player1Health" type="RichTextLabel" parent="."]
@@ -83,13 +83,13 @@ shape = SubResource("RectangleShape2D_hx20k")
 [node name="HitboxBandwidth" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxBandwidth"]
-position = Vector2(844, 541)
+position = Vector2(845, 540)
 shape = SubResource("RectangleShape2D_hx20k")
 
 [node name="HitboxPacketloss" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxPacketloss"]
-position = Vector2(844, 729)
+position = Vector2(844, 725)
 shape = SubResource("RectangleShape2D_hx20k")
 
 [connection signal="input_event" from="HitboxIntegrity" to="Stats" method="_on_hitbox_integrity_input_event"]
