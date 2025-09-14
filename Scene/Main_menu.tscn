@@ -77,12 +77,12 @@ texture = ExtResource("5_67yso")
 [node name="Background" type="Node2D" parent="."]
 
 [node name="Back" type="Sprite2D" parent="Background"]
-position = Vector2(960, 540)
+position = Vector2(962, 542)
 texture = ExtResource("8_67yso")
 
 [node name="Sign" type="Sprite2D" parent="Background"]
 modulate = Color(2.21, 0, 0, 1)
-position = Vector2(791, 145)
+position = Vector2(790, 148)
 scale = Vector2(0.689565, 0.593)
 texture = ExtResource("2_40btf")
 script = ExtResource("3_khtsr")
