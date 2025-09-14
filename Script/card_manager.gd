@@ -2,52 +2,89 @@ extends Node2D
 
 const COLLISIONMASK_CARD = 1
 const COLLISIONMASK_CARD_SLOT = 2
+const DEFAULT_CARD_MOVE_SPEED = 0.1
+const DEFAULT_CARD_SCALE = 0.2
+const CARD_BIGER_SCALE = 0.22
+const CARD_SMALLER_SCALE = 0.2
 
 var card_being_dragged
 var screen_size
-var player_hand_reference
-var last_hovered_card = null
+var is_hovering_on_card
+var player_hand_reference 
+var played_Magis_card_this_turn = false
 
+# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	screen_size = get_viewport_rect().size
-	player_hand_reference = $"../PlayerHand"
-	$"../Input".connect("left_mouse_button_clicked", on_left_click)
+	player_hand_reference = $"../Playerhand"
+	$"../InputManager".connect("left_mouse_button_released", on_left_click_released)
 
-func _process(_delta: float) -> void:
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
 	if card_being_dragged:
 		var mouse_pos = get_global_mouse_position()
-		card_being_dragged.position = Vector2(
-			clamp(mouse_pos.x, 0, screen_size.x),
-			clamp(mouse_pos.y, 0, screen_size.y)
-		)
-	else:
-		var current_hovered_card = raycast_check_for_card()
-		
-		if current_hovered_card != last_hovered_card:
-			if last_hovered_card:
-				hightlight_card(last_hovered_card, false)
-			
-			if current_hovered_card:
-				hightlight_card(current_hovered_card, true)
-			
-			last_hovered_card = current_hovered_card
+		card_being_dragged.position = Vector2(clamp(mouse_pos.x, 0, screen_size.x),
+			clamp(mouse_pos.y, 0, screen_size.y))
 
-func on_card_pressed(card):
-	print("pressed %s" % card.name)
-	player_hand_reference.remove_card_from_hand(card)
+func start_drag(card):
+	card_being_dragged = card
+	card.scale = Vector2(DEFAULT_CARD_SCALE,DEFAULT_CARD_SCALE)
 
-func on_left_click():
-	print("clicked")
+func finish_drag():
+	print("Runing")
+	card_being_dragged.scale = Vector2(CARD_BIGER_SCALE,CARD_BIGER_SCALE)
+	var card_slot_found = raycast_check_for_card_slot()
+	if card_slot_found and not card_slot_found.card_in_slot:
+		#if the card can be placed in this slot
+		if card_being_dragged.card_type == card_slot_found.card_slot_type:
+			if !played_Magis_card_this_turn:
+				#card dropped in card slot
+				card_being_dragged.scale = Vector2(CARD_SMALLER_SCALE,CARD_SMALLER_SCALE)
+				card_being_dragged.z_index = -1
+				is_hovering_on_card = false
+				card_being_dragged.card_slot_card_is_in = card_slot_found
+				player_hand_reference.remove_card_from_hand(card_being_dragged)
+				#card dropped in empty card slot
+				card_being_dragged.position = card_slot_found.position
+				card_being_dragged.get_node("Area2D/CollisionShape2D").disabled = true
+				card_slot_found.card_in_slot = true
+				card_being_dragged = null
+				return
+	player_hand_reference.add_card_to_hand(card_being_dragged, DEFAULT_CARD_MOVE_SPEED)
+	card_being_dragged = null
+
+func connect_card_signals(card):
+	card.connect("hovered", on_hovered_over_card)
+	card.connect("hovered_off", on_hovered_off_card)
+	
+func on_left_click_released():
+	if card_being_dragged:
+		finish_drag()
+
+func on_hovered_over_card(card) :
+	if !is_hovering_on_card:
+		is_hovering_on_card = true
+	hightlight_card(card,true)
+
+func on_hovered_off_card(card) :
+	#check if card is not in card slot and not being drag 7.00
+	if !card.card_slot_card_is_in && !card_being_dragged :
+			hightlight_card(card,false)
+			# check if hovered off card straight on to another card
+			var new_card_horvered = raycast_check_for_card()
+			if new_card_horvered:
+				hightlight_card(new_card_horvered,true)
+			else :
+				is_hovering_on_card = false
 
 func hightlight_card(card, hovered):
-	if card and card.name.begins_with("Card_"):
-		if hovered:
-			card.scale = Vector2(0.21, 0.21)
-			card.z_index = 2
-		else:
-			card.scale = Vector2(0.2, 0.2)
-			card.z_index = 1
-
+	if hovered:
+		card.scale = Vector2(CARD_BIGER_SCALE,CARD_BIGER_SCALE)
+		card.z_index = 2
+	else :
+		card.scale = Vector2(CARD_BIGER_SCALE,CARD_BIGER_SCALE)
+		card.z_index = 1
+ 
 func raycast_check_for_card_slot():
 	var space_state = get_world_2d().direct_space_state
 	var parameters = PhysicsPointQueryParameters2D.new()
@@ -67,14 +104,15 @@ func raycast_check_for_card():
 	parameters.collision_mask = COLLISIONMASK_CARD
 	var result = space_state.intersect_point(parameters)
 	if result.size() > 0:
-		return get_card_with_highest_z_index(result)
+		return get_card_with_hightest_z_index(result)
 	return null
 
-func get_card_with_highest_z_index(cards):
-	var highest_z_card = cards[0].collider.get_parent()
+func get_card_with_hightest_z_index(card) :
+	var highest_z_card = card[0].collider.get_parent()
 	var highest_z_index = highest_z_card.z_index
-	for i in range(1, cards.size()):
-		var current_card = cards[i].collider.get_parent()
+	
+	for i in range(1,card.size()):
+		var current_card = card[i].collider.get_parent()
 		if current_card.z_index > highest_z_index:
 			highest_z_card = current_card
 			highest_z_index = current_card.z_index

@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://wsx704nab2tp"]
+
+[ext_resource type="Script" path="res://Script/MagicCardSlot.gd" id="1_yqki0"]
+[ext_resource type="Texture2D" uid="uid://dne6am0l02fqb" path="res://Asset/fieduseCard.png" id="2_maae3"]
+
+[node name="Cardslot" type="Node2D"]
+scale = Vector2(0.95, 1.52)
+script = ExtResource("1_yqki0")
+
+[node name="CardSlotImage" type="Sprite2D" parent="."]
+scale = Vector2(0.117, 0.094)
+texture = ExtResource("2_maae3")

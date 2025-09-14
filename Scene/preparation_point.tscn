@@ -1,0 +1,172 @@
+[gd_scene load_steps=6 format=3 uid="uid://biwdnrn4o8svg"]
+
+[ext_resource type="Texture2D" uid="uid://b72sdy3wkfdq6" path="res://Asset/UI/10.png" id="1_j184r"]
+[ext_resource type="Texture2D" uid="uid://cbjyaxabepcs5" path="res://Asset/UI/12.png" id="2_j3bg7"]
+[ext_resource type="Texture2D" uid="uid://bunj3x3q1i5hk" path="res://Asset/UI/11.png" id="3_rcsyx"]
+[ext_resource type="FontFile" uid="uid://da278r8wxdci8" path="res://Asset/Font/rainyhearts.ttf" id="4_2ecv6"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_k7km0"]
+texture = ExtResource("1_j184r")
+
+[node name="PreparationPoint" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_k7km0")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 1234.0
+offset_top = 329.0
+offset_right = 2453.0
+offset_bottom = 1385.0
+scale = Vector2(0.402951, 0.402951)
+texture = ExtResource("2_j3bg7")
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 79.0
+offset_top = 881.0
+offset_right = 1298.0
+offset_bottom = 1937.0
+scale = Vector2(0.15009, 0.15009)
+texture = ExtResource("3_rcsyx")
+
+[node name="Point" type="Label" parent="."]
+layout_mode = 1
+offset_top = 30.0
+offset_right = 585.0
+offset_bottom = 203.0
+theme_override_colors/font_color = Color(1, 1, 0.129412, 1)
+theme_override_fonts/font = ExtResource("4_2ecv6")
+theme_override_font_sizes/font_size = 75
+text = "POINTS 
+REMAININGL: 100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Timecount" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -625.0
+offset_right = -40.0
+offset_bottom = 173.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0.940936, 0.959308, 1, 1)
+theme_override_fonts/font = ExtResource("4_2ecv6")
+theme_override_font_sizes/font_size = 75
+text = "PREPARATION 0:58"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Integrity" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -1962.0
+offset_top = 314.0
+offset_right = -1011.0
+offset_bottom = 412.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_2ecv6")
+theme_override_font_sizes/font_size = 85
+text = "Integrity             0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Bandwidth" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -1836.0
+offset_top = 490.0
+offset_right = -1145.0
+offset_bottom = 588.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_2ecv6")
+theme_override_font_sizes/font_size = 85
+text = "Bandwidth           0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Packet Loss" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -1864.0
+offset_top = 659.0
+offset_right = -1110.0
+offset_bottom = 757.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_2ecv6")
+theme_override_font_sizes/font_size = 85
+text = "Packet Loss         0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button Integrity" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.485
+anchor_top = 0.331
+anchor_right = 0.485
+anchor_bottom = 0.331
+offset_left = -39.2
+offset_top = -87.48
+offset_right = 38.8
+offset_bottom = 87.52
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 122
+text = "+"
+
+[node name="Button Bandwidth" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.485
+anchor_top = 0.495
+anchor_right = 0.485
+anchor_bottom = 0.495
+offset_left = -39.2
+offset_top = -87.6
+offset_right = 38.8
+offset_bottom = 87.4
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 122
+text = "+"
+
+[node name="Button Packet Loss" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.485
+anchor_top = 0.495
+anchor_right = 0.485
+anchor_bottom = 0.495
+offset_left = -39.2
+offset_top = 77.4
+offset_right = 38.8
+offset_bottom = 252.4
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 122
+text = "+"

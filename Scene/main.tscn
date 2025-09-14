@@ -1,35 +1,214 @@
-[gd_scene load_steps=7 format=3 uid="uid://b7wlgwr6spoua"]
+[gd_scene load_steps=14 format=3 uid="uid://bbjh5jh5bs1t5"]
 
-[ext_resource type="Script" uid="uid://wf8xef8mvt6q" path="res://Script/card_manager.gd" id="1_56fl5"]
-[ext_resource type="Script" uid="uid://dldnexsstevk" path="res://Script/player_hand.gd" id="3_r34rm"]
-[ext_resource type="Script" uid="uid://1kojqqmyjx8e" path="res://Script/deck.gd" id="4_1xcnr"]
-[ext_resource type="Texture2D" uid="uid://dxnhtc0mraow3" path="res://Asset/IMG/29.png" id="4_2wwxx"]
-[ext_resource type="Script" path="res://Script/input.gd" id="6_ow1sv"]
+[ext_resource type="Script" path="res://Script/card_manager.gd" id="1_56fl5"]
+[ext_resource type="Texture2D" uid="uid://bxkyymwn3fc4p" path="res://Asset/IMG/FiledBack.png" id="1_a84f0"]
+[ext_resource type="Texture2D" uid="uid://b72sdy3wkfdq6" path="res://Asset/UI/10.png" id="1_lk7oc"]
+[ext_resource type="Script" path="res://Script/playerhand.gd" id="3_iqutw"]
+[ext_resource type="PackedScene" uid="uid://d3thw7ewxb7wj" path="res://Scene/Cardslot.tscn" id="3_xtasv"]
+[ext_resource type="Texture2D" uid="uid://dxnhtc0mraow3" path="res://Asset/IMG/29.png" id="4_i0fp1"]
+[ext_resource type="Script" path="res://Script/deck.gd" id="4_lib1h"]
+[ext_resource type="PackedScene" uid="uid://wsx704nab2tp" path="res://Scene/EnemyCardslot.tscn" id="6_oyyt0"]
+[ext_resource type="Script" path="res://Script/input_manager.gd" id="7_h36c2"]
+[ext_resource type="FontFile" uid="uid://da278r8wxdci8" path="res://Asset/Font/rainyhearts.ttf" id="8_y2327"]
+[ext_resource type="Texture2D" uid="uid://sguluvh8i0kk" path="res://Asset/IMG/28.png" id="11_iw22w"]
+[ext_resource type="Texture2D" uid="uid://cm632sgg7c8pb" path="res://Asset/IMG/27.png" id="12_053pa"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_3amdw"]
-size = Vector2(96, 166)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ixwm3"]
+size = Vector2(743.998, 1402)
 
 [node name="Main" type="Node2D"]
+
+[node name="Background" type="Sprite2D" parent="."]
+z_index = -4
+position = Vector2(961, 539)
+texture = ExtResource("1_lk7oc")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -4
+position = Vector2(960, 540)
+scale = Vector2(0.881092, 0.881092)
+texture = ExtResource("1_a84f0")
+
+[node name="Deck" type="Node2D" parent="."]
+position = Vector2(960, 412)
+scale = Vector2(0.107308, 0.107308)
+script = ExtResource("4_lib1h")
+
+[node name="Sprite2D" type="Sprite2D" parent="Deck"]
+z_index = -2
+scale = Vector2(1.32311, 1.32311)
+texture = ExtResource("4_i0fp1")
+
+[node name="Area2D" type="Area2D" parent="Deck"]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Deck/Area2D"]
+shape = SubResource("RectangleShape2D_ixwm3")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Deck"]
+modulate = Color(1, 0, 0, 1)
+z_index = -2
+offset_left = -49.9997
+offset_top = -399.998
+offset_right = -19.9997
+offset_bottom = -369.998
+scale = Vector2(10, 10)
+text = "0"
+metadata/_edit_use_anchors_ = true
 
 [node name="CardManager" type="Node2D" parent="."]
 script = ExtResource("1_56fl5")
 
-[node name="PlayerHand" type="Node2D" parent="."]
-script = ExtResource("3_r34rm")
+[node name="CardSlotPlayer1" type="Node2D" parent="."]
 
-[node name="Deck" type="Node2D" parent="."]
-position = Vector2(935, 505)
-script = ExtResource("4_1xcnr")
+[node name="Cardslot" parent="CardSlotPlayer1" instance=ExtResource("3_xtasv")]
+z_index = -4
+position = Vector2(700, 691)
+scale = Vector2(1, 1.52)
 
-[node name="Sprite2D" type="Sprite2D" parent="Deck"]
-scale = Vector2(0.195, 0.195)
-texture = ExtResource("4_2wwxx")
+[node name="Cardslot2" parent="CardSlotPlayer1" instance=ExtResource("3_xtasv")]
+z_index = -4
+position = Vector2(825, 691)
+scale = Vector2(1, 1.52)
 
-[node name="Area2D" type="Area2D" parent="Deck"]
+[node name="Cardslot3" parent="CardSlotPlayer1" instance=ExtResource("3_xtasv")]
+z_index = -4
+position = Vector2(960, 691)
+scale = Vector2(1, 1.52)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Deck/Area2D"]
-position = Vector2(0, -7)
-shape = SubResource("RectangleShape2D_3amdw")
+[node name="Cardslot4" parent="CardSlotPlayer1" instance=ExtResource("3_xtasv")]
+z_index = -4
+position = Vector2(1085, 691)
+scale = Vector2(1, 1.52)
 
-[node name="Input" type="Node2D" parent="."]
-script = ExtResource("6_ow1sv")
+[node name="Cardslot5" parent="CardSlotPlayer1" instance=ExtResource("3_xtasv")]
+z_index = -4
+position = Vector2(1220, 691)
+scale = Vector2(1, 1.52)
+
+[node name="CardSlotPlayer2" type="Node2D" parent="."]
+
+[node name="Cardslot6" parent="CardSlotPlayer2" instance=ExtResource("6_oyyt0")]
+z_index = -4
+position = Vector2(1075, 263)
+rotation = 0.523599
+
+[node name="Cardslot7" parent="CardSlotPlayer2" instance=ExtResource("6_oyyt0")]
+z_index = -4
+position = Vector2(1167, 318)
+rotation = 0.523599
+
+[node name="Cardslot8" parent="CardSlotPlayer2" instance=ExtResource("6_oyyt0")]
+z_index = -4
+position = Vector2(1255, 369)
+rotation = 0.523599
+
+[node name="Cardslot9" parent="CardSlotPlayer2" instance=ExtResource("6_oyyt0")]
+z_index = -4
+position = Vector2(1343, 417)
+rotation = 0.523599
+
+[node name="Cardslot10" parent="CardSlotPlayer2" instance=ExtResource("6_oyyt0")]
+z_index = -4
+position = Vector2(1431, 465)
+rotation = 0.523599
+
+[node name="CardSlotPlayer3" type="Node2D" parent="."]
+
+[node name="Cardslot6" parent="CardSlotPlayer3" instance=ExtResource("6_oyyt0")]
+position = Vector2(493, 467)
+rotation = -0.523599
+
+[node name="Cardslot7" parent="CardSlotPlayer3" instance=ExtResource("6_oyyt0")]
+position = Vector2(585, 414)
+rotation = -0.523599
+
+[node name="Cardslot8" parent="CardSlotPlayer3" instance=ExtResource("6_oyyt0")]
+position = Vector2(675, 365)
+rotation = -0.523599
+
+[node name="Cardslot9" parent="CardSlotPlayer3" instance=ExtResource("6_oyyt0")]
+position = Vector2(765.955, 314)
+rotation = -0.523599
+
+[node name="Cardslot10" parent="CardSlotPlayer3" instance=ExtResource("6_oyyt0")]
+position = Vector2(859, 255)
+rotation = -0.523599
+
+[node name="Playerhand" type="Node2D" parent="."]
+script = ExtResource("3_iqutw")
+
+[node name="InputManager" type="Node2D" parent="."]
+script = ExtResource("7_h36c2")
+
+[node name="Button" type="Button" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1587.0
+offset_top = 968.0
+offset_right = 1871.0
+offset_bottom = 1055.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_fonts/font = ExtResource("8_y2327")
+theme_override_font_sizes/font_size = 60
+text = "Skip"
+
+[node name="PointPanelP1" type="Sprite2D" parent="."]
+position = Vector2(354.375, 930)
+scale = Vector2(0.289313, 0.266321)
+texture = ExtResource("11_iw22w")
+
+[node name="P1PC" type="Sprite2D" parent="."]
+position = Vector2(109, 961)
+scale = Vector2(0.1875, 0.1875)
+texture = ExtResource("12_053pa")
+
+[node name="Integrity  P1" type="Label" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 243.0
+offset_top = 836.0
+offset_right = 555.0
+offset_bottom = 917.0
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("8_y2327")
+theme_override_font_sizes/font_size = 45
+text = "Integrity   0
+"
+
+[node name="Integrity  P2" type="Label" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 243.0
+offset_top = 911.0
+offset_right = 555.0
+offset_bottom = 992.0
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("8_y2327")
+theme_override_font_sizes/font_size = 45
+text = "Bandwidth 0
+"
+
+[node name="Integrity  P3" type="Label" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 243.0
+offset_top = 988.0
+offset_right = 555.0
+offset_bottom = 1069.0
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("8_y2327")
+theme_override_font_sizes/font_size = 45
+text = "Packet Loss 0
+"
