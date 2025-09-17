@@ -73,6 +73,7 @@ texture = ExtResource("4_fvn5p")
 texture = ExtResource("5_67yso")
 
 [node name="MainMenu" type="Node2D"]
+position = Vector2(-2, -2)
 
 [node name="Background" type="Node2D" parent="."]
 
@@ -104,6 +105,7 @@ offset_top = 230.0
 offset_right = 500.0
 offset_bottom = 270.0
 script = ExtResource("1_4r2h4")
+metadata/_edit_use_anchors_ = true
 
 [node name="Start" type="Button" parent="Control"]
 layout_mode = 1
@@ -129,6 +131,7 @@ theme_override_colors/icon_normal_color = Color(0, 0, 0, 0)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0)
 theme_override_styles/hover = SubResource("StyleBoxTexture_67yso")
 theme_override_styles/normal = SubResource("StyleBoxTexture_khtsr")
+metadata/_edit_use_anchors_ = true
 
 [node name="Settings" type="Button" parent="Control"]
 layout_mode = 1
@@ -144,6 +147,7 @@ offset_bottom = 356.8
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_styles/normal = SubResource("StyleBoxTexture_ek8gv")
+metadata/_edit_use_anchors_ = true
 
 [node name="Scripts" type="Button" parent="Control"]
 layout_mode = 1
@@ -159,6 +163,7 @@ offset_bottom = 496.8
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_styles/normal = SubResource("StyleBoxTexture_otrw3")
+metadata/_edit_use_anchors_ = true
 
 [node name="Quit" type="Button" parent="Control"]
 layout_mode = 1
@@ -174,6 +179,7 @@ offset_bottom = 649.2
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_styles/normal = SubResource("StyleBoxTexture_5je63")
+metadata/_edit_use_anchors_ = true
 
 [node name="Main Menu Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("7_67yso")

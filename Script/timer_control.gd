@@ -1,6 +1,6 @@
 extends Node2D   # or Control, depending on your scene root
 
-@export var start_seconds: int = 90
+@export var start_seconds: int = 5
 
 @onready var prep_timer: Timer = $"Prep Time"
 @onready var time_label: RichTextLabel = $"Time Left"   # <-- fixed
@@ -20,7 +20,7 @@ func _on_prep_time_timeout() -> void:
 	remaining_seconds -= 1
 	if remaining_seconds <= 0:
 		prep_timer.stop()
-		get_tree().change_scene_to_file("res://Scene/Main_menu.tscn") # change this path
+		get_tree().change_scene_to_file("res://Scene/main.tscn") # change this path
 	else:
 		update_time_label()
 

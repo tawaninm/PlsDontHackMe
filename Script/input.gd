@@ -12,10 +12,17 @@ func _ready() -> void:
 	card_manager_reference = $"../CardManager"
 	deck_reference = $"../Deck"
 
+# res://Scripts/Input.gd
+
 func _input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		emit_signal("left_mouse_button_clicked")
-		raycast_at_cursor()
+		# world position
+		var pos = get_global_mouse_position()
+		# send to GameManager to handle (GameManager will raycast via CardManager or process deck)
+		# If you prefer the old raycast-in-Input approach, you can keep that - but this centralizes logic.
+		GameManager.card_clicked_from_input_at_position(pos, event.button_index)
+
+
 
 func raycast_at_cursor():
 	var space_state = get_world_2d().direct_space_state

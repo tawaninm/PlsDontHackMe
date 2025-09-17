@@ -2,13 +2,14 @@
 
 [ext_resource type="Texture2D" uid="uid://i3ieavlfunha" path="res://Asset/Prep Menu/Prep Menu.png" id="1_fvspc"]
 [ext_resource type="FontFile" uid="uid://813uw6m7dur7" path="res://Asset/Font/PressStart2P-Regular.ttf" id="2_hx20k"]
-[ext_resource type="Script" uid="uid://d2yxiskadeox2" path="res://Script/stats.gd" id="3_l4nx8"]
-[ext_resource type="Script" uid="uid://ct77svuagfkh0" path="res://timer_control.gd" id="4_hx20k"]
+[ext_resource type="Script" uid="uid://d2yxiskadeox2" path="res://Script/Stats.gd" id="3_l4nx8"]
+[ext_resource type="Script" uid="uid://vy80kmm3dpds" path="res://Script/timer_control.gd" id="4_hx20k"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hx20k"]
 size = Vector2(77.125, 75.75)
 
 [node name="Prep Menu" type="Node2D"]
+position = Vector2(-2, -2)
 
 [node name="Background" type="Sprite2D" parent="."]
 position = Vector2(962, 542)
@@ -23,6 +24,7 @@ scale = Vector2(3.345, 3.345)
 theme_override_fonts/normal_font = ExtResource("2_hx20k")
 bbcode_enabled = true
 text = "[color=#e5b931]0"
+metadata/_edit_use_anchors_ = true
 
 [node name="Player1Mana" type="RichTextLabel" parent="."]
 offset_left = 558.0
@@ -33,6 +35,7 @@ scale = Vector2(3.345, 3.345)
 theme_override_fonts/normal_font = ExtResource("2_hx20k")
 bbcode_enabled = true
 text = "[color=#e5b931]0"
+metadata/_edit_use_anchors_ = true
 
 [node name="Player1Error" type="RichTextLabel" parent="."]
 offset_left = 560.0
@@ -43,6 +46,7 @@ scale = Vector2(3.345, 3.345)
 theme_override_fonts/normal_font = ExtResource("2_hx20k")
 bbcode_enabled = true
 text = "[color=#e5b931]0"
+metadata/_edit_use_anchors_ = true
 
 [node name="Stats" type="Node" parent="."]
 script = ExtResource("3_l4nx8")
@@ -56,6 +60,7 @@ scale = Vector2(2.595, 2.595)
 theme_override_fonts/normal_font = ExtResource("2_hx20k")
 bbcode_enabled = true
 text = "[color=#cc0000]0"
+metadata/_edit_use_anchors_ = true
 
 [node name="TimerControl" type="Node2D" parent="."]
 position = Vector2(1680, 60)
@@ -73,6 +78,7 @@ scale = Vector2(1.08, 1.08)
 theme_override_fonts/normal_font = ExtResource("2_hx20k")
 bbcode_enabled = true
 text = "[color=#cc0000]0"
+metadata/_edit_use_anchors_ = true
 
 [node name="HitboxIntegrity" type="Area2D" parent="."]
 
