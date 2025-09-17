@@ -55,11 +55,9 @@ func update_ui() -> void:
 	error_label.bbcode_enabled = true
 	points_label.bbcode_enabled = true
 
-	# show values (gold color)
 	health_label.bbcode_text = "[color=#e5b931]%d[/color]" % player1_integrity
 	mana_label.bbcode_text   = "[color=#e5b931]%d[/color]" % player1_bandwidth
 	error_label.bbcode_text  = "[color=#e5b931]%d[/color]" % player1_packetloss
-	# <-- This line displays the player's points
 	points_label.bbcode_text = "[color=#e5b931]%d[/color]" % player1_points
 
 # --- Hitbox callbacks (with cooldown and prints) ---
@@ -124,26 +122,45 @@ func _on_HitboxPacketloss_input_event(viewport, event, shape_idx) -> void:
 		can_click_packetloss = true
 
 # --- Timer tick (countdown + auto-spend on timeout) ---
+# In stats.gd
+
+# Add this new function at the top of your script
+@rpc("any_peer", "call_local")
+func start_game(starting_player_id):
+	# This function will be called by the server on all players
+	NetworkManager.current_turn_id = starting_player_id
+	get_tree().change_scene_to_file("res://Scene/main.tscn") # Your main game board scene
+	
 func _on_Prep_Time_timeout() -> void:
 	remaining_seconds -= 1
-
-	# if time's up, auto-spend remaining points to integrity (respect caps)
 	if remaining_seconds <= 0:
 		if prep_timer:
 			prep_timer.stop()
 
+		# Auto-spend points logic (your code is fine)
 		while player1_points > 0 and player1_integrity < MAX_INTEGRITY:
 			player1_points -= 1
 			player1_integrity = min(player1_integrity + 2, MAX_INTEGRITY)
-
 		if player1_integrity < 2:
 			player1_integrity = 2
 
-		print("Time ran out! Auto-spent points. Final: Integrity:", player1_integrity, "Bandwidth:", player1_bandwidth, "Packetloss:", player1_packetloss, "Points left:", player1_points)
+			print("Time's up! Submitting stats to server.")
+			update_ui()
+
+		# Create a dictionary of the final stats
+		var final_stats = {
+			"id": multiplayer.get_unique_id(),
+			"integrity": player1_integrity,
+			"bandwidth": player1_bandwidth,
+			"packetloss": player1_packetloss
+		}
+
+		if multiplayer.is_server():
+	# Host calls directly on itself
+			GameManager.receive_player_stats(final_stats)
+		else:
+	# Clients send to host (ID = 1)
+			GameManager.rpc_id(1, "receive_player_stats", final_stats)
+	
+	else:
 		update_ui()
-
-		# change scene (adjust path)
-		get_tree().change_scene_to_file("res://scenes/NextScene.tscn")
-		return
-
-	update_ui()

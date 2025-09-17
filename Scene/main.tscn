@@ -1,11 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://b7wlgwr6spoua"]
+[gd_scene load_steps=7 format=3 uid="uid://b7wlgwr6spoua"]
 
 [ext_resource type="Script" uid="uid://wf8xef8mvt6q" path="res://Script/card_manager.gd" id="1_56fl5"]
 [ext_resource type="Script" uid="uid://dldnexsstevk" path="res://Script/player_hand.gd" id="3_r34rm"]
-[ext_resource type="PackedScene" uid="uid://d3thw7ewxb7wj" path="res://Scene/cardslot.tscn" id="3_xtasv"]
 [ext_resource type="Script" uid="uid://1kojqqmyjx8e" path="res://Script/deck.gd" id="4_1xcnr"]
 [ext_resource type="Texture2D" uid="uid://dxnhtc0mraow3" path="res://Asset/IMG/29.png" id="4_2wwxx"]
-[ext_resource type="Script" path="res://Script/input.gd" id="6_ow1sv"]
+[ext_resource type="Script" uid="uid://ba0ysbiwv3o4a" path="res://Script/input.gd" id="6_ow1sv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3amdw"]
 size = Vector2(96, 166)
@@ -14,10 +13,6 @@ size = Vector2(96, 166)
 
 [node name="CardManager" type="Node2D" parent="."]
 script = ExtResource("1_56fl5")
-
-[node name="Cardslot" parent="." instance=ExtResource("3_xtasv")]
-position = Vector2(-87, 157)
-scale = Vector2(1, 1.52)
 
 [node name="PlayerHand" type="Node2D" parent="."]
 script = ExtResource("3_r34rm")
