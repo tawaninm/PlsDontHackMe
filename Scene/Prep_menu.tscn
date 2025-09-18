@@ -2,8 +2,8 @@
 
 [ext_resource type="Texture2D" uid="uid://i3ieavlfunha" path="res://Asset/Prep Menu/Prep Menu.png" id="1_fvspc"]
 [ext_resource type="FontFile" uid="uid://813uw6m7dur7" path="res://Asset/Font/PressStart2P-Regular.ttf" id="2_hx20k"]
-[ext_resource type="Script" path="res://Script/Stats.gd" id="3_l4nx8"]
-[ext_resource type="Script" path="res://timer_control.gd" id="4_hx20k"]
+[ext_resource type="Script" uid="uid://d2yxiskadeox2" path="res://Script/Stats.gd" id="3_l4nx8"]
+[ext_resource type="Script" uid="uid://ct77svuagfkh0" path="res://timer_control.gd" id="4_hx20k"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hx20k"]
 size = Vector2(77.125, 75.75)

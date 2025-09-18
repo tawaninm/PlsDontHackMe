@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://u44cll7bp3s0"]
 
-[ext_resource type="Script" path="res://Script/card.gd" id="1_xlue2"]
+[ext_resource type="Script" uid="uid://c372ipk0lnpbf" path="res://Script/card.gd" id="1_xlue2"]
 [ext_resource type="Texture2D" uid="uid://bifb6xgm88j88" path="res://Asset/IMG/FileInfectorCard.png" id="2_blj0v"]
 [ext_resource type="Texture2D" uid="uid://dxnhtc0mraow3" path="res://Asset/IMG/29.png" id="2_qjb33"]
 [ext_resource type="FontFile" uid="uid://da278r8wxdci8" path="res://Asset/Font/rainyhearts.ttf" id="4_08fke"]
@@ -161,8 +161,8 @@ tracks/5/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_evirq"]
 _data = {
-"RESET": SubResource("Animation_7pqhs"),
-"card_filp": SubResource("Animation_anro0")
+&"RESET": SubResource("Animation_7pqhs"),
+&"card_filp": SubResource("Animation_anro0")
 }
 
 [node name="Card" type="Node2D"]
@@ -210,7 +210,7 @@ text = "0"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_evirq")
+&"": SubResource("AnimationLibrary_evirq")
 }
 
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
