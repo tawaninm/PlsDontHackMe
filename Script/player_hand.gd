@@ -4,7 +4,7 @@ extends Node2D
 @export var hand_y_position: int = 800
 
 const HAND_MARGIN := 100
-const CARD_WIDTH := 66
+const CARD_WIDTH := 120   # bump width so spacing feels natural
 
 var player_hand: Array = []
 var center_screen_x: float
@@ -15,47 +15,43 @@ func _ready() -> void:
 	center_screen_x = screen_width / 2
 
 func add_card_to_hand(card: Node) -> void:
-	player_hand.insert(0, card)
+	player_hand.append(card)
 	card.z_index = 1
-	# use the card's method if available (we renamed methods to avoid Node overrides)
+
+	# give ownership
 	if card.has_method("set_card_owner"):
 		card.set_card_owner(player_index)
 	else:
-		# fallback assign
 		card.set("owner_index", player_index)
+
+	# spawn new card at screen center (offscreen bottom if you want)
+	card.position = Vector2(center_screen_x, hand_y_position + 300)
+
+	add_child(card)
 	update_hand_position()
 
 func update_hand_position() -> void:
-	for i in range(player_hand.size()):
-		var new_position = Vector2(calculate_card_position(i), hand_y_position)
-		var card = player_hand[i]
-		
-		if card:  # make sure the card exists
-			# set a property or call a method depending on how your card script is structured
-			if card.has_method("set_starting_position"):
-				card.set_starting_position(new_position)
-			else:
-				card.set("position", new_position)  # fallback
-		
-			animate_card_to_position(card, new_position)
-
-
-func calculate_card_position(index: int) -> float:
 	var hand_size = player_hand.size()
 	if hand_size == 0:
-		return center_screen_x
-	if hand_size == 1:
-		return center_screen_x
+		return
+
 	var available_width = screen_width - (HAND_MARGIN * 2)
 	var max_spacing = CARD_WIDTH
 	var spacing = min(available_width / (hand_size - 1), max_spacing)
 	var total_width = (hand_size - 1) * spacing
 	var start_x = center_screen_x - total_width / 2
-	return start_x + index * spacing
+
+	for i in range(hand_size):
+		var card = player_hand[i]
+		if not card:
+			continue
+
+		var target_pos = Vector2(start_x + spacing * i, hand_y_position)
+		animate_card_to_position(card, target_pos)
 
 func animate_card_to_position(card: Node, new_position: Vector2) -> void:
 	var tween = get_tree().create_tween()
-	tween.tween_property(card, "position", new_position, 0.18)
+	tween.tween_property(card, "position", new_position, 0.35).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
 func remove_card_from_hand(card: Node) -> void:
 	if card in player_hand:
@@ -70,7 +66,8 @@ func get_hand_size() -> int:
 func get_card_types() -> Array:
 	var arr: Array = []
 	for c in player_hand:
-		arr.append(c.get_card_type())
+		if c.has_method("get_card_type"):
+			arr.append(c.get_card_type())
 	return arr
 
 func get_card_nodes() -> Array:

@@ -76,26 +76,34 @@ layout_mode = 2
 [node name="UI" type="Control" parent="CanvasLayer"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = -49.0
+offset_top = -2.0
+offset_right = -9.0
+offset_bottom = 38.0
 
 [node name="PlayerUI3" type="Control" parent="CanvasLayer/UI"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = -61.0
+offset_top = -62.0
+offset_right = -21.0
+offset_bottom = -22.0
 script = ExtResource("8_3pt4j")
 
 [node name="PlayerUI2" type="Control" parent="CanvasLayer/UI"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 39.0
+offset_top = -55.0
+offset_right = 79.0
+offset_bottom = -15.0
 script = ExtResource("8_3pt4j")
 
 [node name="PlayerUI1" type="Control" parent="CanvasLayer/UI"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 6.0
+offset_top = -49.0
+offset_right = 46.0
+offset_bottom = -9.0
 script = ExtResource("8_3pt4j")

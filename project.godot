@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 GameManager="*res://Script/game_manager.gd"
 CardData="*res://Script/CardData.gd"
+PrepToGameManager="*res://PrepToGameManager.gd"
 
 [display]
 

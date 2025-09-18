@@ -124,14 +124,15 @@ func _on_HitboxPacketloss_input_event(viewport, event, shape_idx) -> void:
 		can_click_packetloss = true
 
 # --- Timer tick (countdown + auto-spend on timeout) ---
+# --- Timer tick (countdown + auto-spend on timeout) ---
 func _on_Prep_Time_timeout() -> void:
 	remaining_seconds -= 1
 
-	# if time's up, auto-spend remaining points to integrity (respect caps)
 	if remaining_seconds <= 0:
 		if prep_timer:
 			prep_timer.stop()
 
+		# Auto-spend leftover points to integrity
 		while player1_points > 0 and player1_integrity < MAX_INTEGRITY:
 			player1_points -= 1
 			player1_integrity = min(player1_integrity + 2, MAX_INTEGRITY)
@@ -139,11 +140,23 @@ func _on_Prep_Time_timeout() -> void:
 		if player1_integrity < 2:
 			player1_integrity = 2
 
-		print("Time ran out! Auto-spent points. Final: Integrity:", player1_integrity, "Bandwidth:", player1_bandwidth, "Packetloss:", player1_packetloss, "Points left:", player1_points)
 		update_ui()
 
-		# change scene (adjust path)
-		get_tree().change_scene_to_file("res://scenes/NextScene.tscn")
+		# --- SAVE to bridge/autoload BEFORE changing scene ---
+		if Engine.has_singleton("PrepToGameManager"):
+			var prep = Engine.get_singleton("PrepToGameManager")
+			prep.p1_integrity = player1_integrity
+			prep.p1_bandwidth = player1_bandwidth
+			prep.p1_packetloss = player1_packetloss
+			print("Prep: saved to PrepToGameManager -> HP:%d BW:%d PL:%d" % [prep.p1_integrity, prep.p1_bandwidth, prep.p1_packetloss])
+		else:
+			push_error("PrepToGameManager autoload not found. Add it in Project Settings -> Autoload")
+
+		# now change to main scene
+		get_tree().change_scene_to_file("res://Scene/main.tscn")
 		return
+
+	update_ui()
+
 
 	update_ui()
