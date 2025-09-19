@@ -3,7 +3,7 @@ extends Node2D
 func _ready() -> void:
 	# adjust names to match your scene tree
 	var cm = $CardManager
-	var deck = $Deck
+	var deck = $Board/Draw
 	var hands = [
 		$PlayerHand,
 		$PlayerHand2,
