@@ -11,6 +11,9 @@ size = Vector2(77.125, 75.75)
 [node name="Prep Menu" type="Node2D"]
 position = Vector2(-2, -2)
 
+[node name="Stats" type="Node" parent="."]
+script = ExtResource("3_l4nx8")
+
 [node name="Background" type="Sprite2D" parent="."]
 position = Vector2(962, 542)
 texture = ExtResource("1_fvspc")
@@ -47,9 +50,6 @@ theme_override_fonts/normal_font = ExtResource("2_hx20k")
 bbcode_enabled = true
 text = "[color=#e5b931]0"
 metadata/_edit_use_anchors_ = true
-
-[node name="Stats" type="Node" parent="."]
-script = ExtResource("3_l4nx8")
 
 [node name="Player1points" type="RichTextLabel" parent="."]
 offset_left = 426.0

@@ -1,19 +1,24 @@
-[gd_scene load_steps=10 format=3 uid="uid://b7wlgwr6spoua"]
+[gd_scene load_steps=12 format=3 uid="uid://b7wlgwr6spoua"]
 
 [ext_resource type="Script" uid="uid://wf8xef8mvt6q" path="res://Script/card_manager.gd" id="1_56fl5"]
 [ext_resource type="Script" uid="uid://bwtg0fuqx2de5" path="res://Script/main.gd" id="1_75buv"]
+[ext_resource type="Script" uid="uid://da5x86dx3lec5" path="res://Script/stat_manager.gd" id="2_3pt4j"]
 [ext_resource type="Script" uid="uid://dldnexsstevk" path="res://Script/player_hand.gd" id="3_r34rm"]
 [ext_resource type="Script" uid="uid://1kojqqmyjx8e" path="res://Script/deck.gd" id="4_1xcnr"]
 [ext_resource type="Texture2D" uid="uid://dxnhtc0mraow3" path="res://Asset/IMG/29.png" id="4_2wwxx"]
 [ext_resource type="Script" uid="uid://ba0ysbiwv3o4a" path="res://Script/input.gd" id="6_ow1sv"]
 [ext_resource type="Script" uid="uid://bk8o7ohxnvyxk" path="res://Script/turn_controls.gd" id="7_c2iwn"]
 [ext_resource type="Script" uid="uid://bla263qdqi2og" path="res://Script/Playerstats.gd" id="8_3pt4j"]
+[ext_resource type="FontFile" uid="uid://813uw6m7dur7" path="res://Asset/Font/PressStart2P-Regular.ttf" id="9_c2iwn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3amdw"]
 size = Vector2(96, 166)
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_75buv")
+
+[node name="StatManager" type="Node2D" parent="."]
+script = ExtResource("2_3pt4j")
 
 [node name="CardManager" type="Node2D" parent="."]
 script = ExtResource("1_56fl5")
@@ -107,3 +112,60 @@ offset_top = -49.0
 offset_right = 46.0
 offset_bottom = -9.0
 script = ExtResource("8_3pt4j")
+
+[node name="P1" type="Node2D" parent="."]
+
+[node name="Ingre" type="Label" parent="P1"]
+offset_left = 378.0
+offset_top = 681.0
+offset_right = 543.0
+offset_bottom = 741.0
+theme_override_fonts/font = ExtResource("9_c2iwn")
+theme_override_font_sizes/font_size = 25
+text = "Ingre"
+
+[node name="Ingre point" type="Label" parent="P1"]
+offset_left = 540.0
+offset_top = 683.0
+offset_right = 580.0
+offset_bottom = 766.0
+theme_override_fonts/font = ExtResource("9_c2iwn")
+theme_override_font_sizes/font_size = 25
+text = "0
+"
+
+[node name="Bandwidth" type="Label" parent="P1"]
+offset_left = 732.0
+offset_top = 680.0
+offset_right = 1152.0
+offset_bottom = 740.0
+theme_override_fonts/font = ExtResource("9_c2iwn")
+theme_override_font_sizes/font_size = 25
+text = "Bandwid"
+
+[node name="Bandwidth point" type="Label" parent="P1"]
+offset_left = 960.0
+offset_top = 682.0
+offset_right = 1002.0
+offset_bottom = 742.0
+theme_override_fonts/font = ExtResource("9_c2iwn")
+theme_override_font_sizes/font_size = 25
+text = "0"
+
+[node name="PacketLoss" type="Label" parent="P1"]
+offset_left = 1213.0
+offset_top = 677.0
+offset_right = 1516.0
+offset_bottom = 737.0
+theme_override_fonts/font = ExtResource("9_c2iwn")
+theme_override_font_sizes/font_size = 25
+text = "PacketLoss"
+
+[node name="PacketLoss point" type="Label" parent="P1"]
+offset_left = 1490.0
+offset_top = 681.0
+offset_right = 1542.0
+offset_bottom = 741.0
+theme_override_fonts/font = ExtResource("9_c2iwn")
+theme_override_font_sizes/font_size = 25
+text = "0"
