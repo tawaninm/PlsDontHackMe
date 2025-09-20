@@ -1,19 +1,63 @@
-[gd_scene load_steps=10 format=3 uid="uid://b7wlgwr6spoua"]
+[gd_scene load_steps=13 format=3 uid="uid://b7wlgwr6spoua"]
 
 [ext_resource type="Script" uid="uid://wf8xef8mvt6q" path="res://Script/card_manager.gd" id="1_56fl5"]
 [ext_resource type="Script" uid="uid://bwtg0fuqx2de5" path="res://Script/main.gd" id="1_75buv"]
+[ext_resource type="Texture2D" uid="uid://dt603c7fwj5ib" path="res://Asset/Main Game/MainGameBackground.png" id="2_3pt4j"]
 [ext_resource type="Script" uid="uid://dldnexsstevk" path="res://Script/player_hand.gd" id="3_r34rm"]
 [ext_resource type="Script" uid="uid://1kojqqmyjx8e" path="res://Script/deck.gd" id="4_1xcnr"]
-[ext_resource type="Texture2D" uid="uid://dxnhtc0mraow3" path="res://Asset/IMG/29.png" id="4_2wwxx"]
+[ext_resource type="FontFile" uid="uid://813uw6m7dur7" path="res://Asset/Font/PressStart2P-Regular.ttf" id="5_3pt4j"]
 [ext_resource type="Script" uid="uid://ba0ysbiwv3o4a" path="res://Script/input.gd" id="6_ow1sv"]
 [ext_resource type="Script" uid="uid://bk8o7ohxnvyxk" path="res://Script/turn_controls.gd" id="7_c2iwn"]
 [ext_resource type="Script" uid="uid://bla263qdqi2og" path="res://Script/Playerstats.gd" id="8_3pt4j"]
+[ext_resource type="Texture2D" uid="uid://c07g518lcoppr" path="res://Asset/Main Game/Finalboard.png" id="10_7y4ci"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3amdw"]
-size = Vector2(96, 166)
+size = Vector2(213, 202)
+
+[sub_resource type="Environment" id="Environment_7y4ci"]
+background_mode = 3
+glow_enabled = true
+glow_intensity = 1.25
+glow_bloom = 0.2
+glow_hdr_threshold = 0.72
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_75buv")
+
+[node name="Board" type="Node2D" parent="."]
+
+[node name="MainGameBackground" type="Sprite2D" parent="Board"]
+position = Vector2(960, 540)
+texture = ExtResource("2_3pt4j")
+
+[node name="Finalboard" type="Sprite2D" parent="Board"]
+position = Vector2(1018, 577)
+scale = Vector2(0.485, 0.485)
+texture = ExtResource("10_7y4ci")
+
+[node name="Label" type="Label" parent="Board"]
+offset_left = 676.0
+offset_top = 368.0
+offset_right = 1220.0
+offset_bottom = 504.0
+theme_override_colors/font_color = Color(1.5, 1.5, 1.5, 1)
+theme_override_fonts/font = ExtResource("5_3pt4j")
+theme_override_font_sizes/font_size = 51
+text = "DRAW"
+horizontal_alignment = 1
+
+[node name="Draw" type="Node2D" parent="Board"]
+position = Vector2(935, 505)
+script = ExtResource("4_1xcnr")
+
+[node name="Area2D" type="Area2D" parent="Board/Draw"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Board/Draw/Area2D"]
+position = Vector2(15, -112)
+shape = SubResource("RectangleShape2D_3amdw")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Board"]
+environment = SubResource("Environment_7y4ci")
 
 [node name="CardManager" type="Node2D" parent="."]
 script = ExtResource("1_56fl5")
@@ -26,20 +70,6 @@ script = ExtResource("3_r34rm")
 
 [node name="PlayerHand3" type="Node2D" parent="."]
 script = ExtResource("3_r34rm")
-
-[node name="Deck" type="Node2D" parent="."]
-position = Vector2(935, 505)
-script = ExtResource("4_1xcnr")
-
-[node name="Sprite2D" type="Sprite2D" parent="Deck"]
-scale = Vector2(0.195, 0.195)
-texture = ExtResource("4_2wwxx")
-
-[node name="Area2D" type="Area2D" parent="Deck"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Deck/Area2D"]
-position = Vector2(0, -7)
-shape = SubResource("RectangleShape2D_3amdw")
 
 [node name="Input" type="Node2D" parent="."]
 script = ExtResource("6_ow1sv")
