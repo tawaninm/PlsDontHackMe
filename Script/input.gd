@@ -10,7 +10,7 @@ var deck_reference
 
 func _ready() -> void:
 	card_manager_reference = $"../CardManager"
-	deck_reference = $"../Board/Draw"
+	deck_reference = $"../Deck"
 
 # res://Scripts/Input.gd
 
