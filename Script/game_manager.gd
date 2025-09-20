@@ -33,9 +33,9 @@ func get_card_cost(name: String) -> int:
 # --- PLAYER STATE ---
 # =============================
 class Player:
-	var integrity: int
-	var bandwidth: int
-	var packetloss: int
+	var integrity = 0
+	var bandwidth = 0
+	var packetloss = 0
 	var skip_turns: int
 	var hand: Array
 	var status_effects: Array
@@ -160,15 +160,26 @@ func start_game() -> void:
 # =============================
 func start_turn() -> void:
 	var player = players[current_player_index]
+
 	if player.skip_turns > 0:
 		player.skip_turns -= 1
 		print("Player %d skips turn. Remaining skips: %d" % [current_player_index + 1, player.skip_turns])
 		end_turn()
 		return
 
-	if "corrupted" in player.status_effects:
-		player.integrity = max(0, player.integrity - 2)
-		print("CorruptedScript: Player %d loses 2 integrity" % [current_player_index + 1])
+	# Count CorruptedScript cards in hand (stacks)
+	var corrupted_count = 0
+	for card in player.hand:
+		if card.has_method("get_card_data"):
+			var data = card.get_card_data()
+			if data.get("name") == "CorruptedScript":
+				corrupted_count += 1
+
+	if corrupted_count > 0:
+		var loss = 2 * corrupted_count
+		player.integrity = max(0, player.integrity - loss)
+		print("CorruptedScript: Player %d loses %d integrity (%d in hand)" %
+			[current_player_index + 1, loss, corrupted_count])
 
 	if player.is_human:
 		if turn_controls:
@@ -176,7 +187,7 @@ func start_turn() -> void:
 	else:
 		player_skip_turn(current_player_index)
 
-	update_ui()
+
 
 func end_turn() -> void:
 	if turn_controls:
@@ -204,9 +215,14 @@ func card_clicked_from_input_at_position(pos: Vector2, button_index: int) -> voi
 		return
 
 	if button_index == MOUSE_BUTTON_LEFT:
-		_try_use_card(current_player_index, card_node)
-	elif button_index == MOUSE_BUTTON_RIGHT:
-		_try_throw_card(current_player_index, card_node)
+		var data = card_node.get_card_data()
+		if data.get("name") == "CorruptedScript":
+			print("CorruptedScript is a passive curse and cannot be used.")
+			return
+		else:_try_use_card(current_player_index, card_node)
+
+
+
 
 # operate on node references (player.hand stores nodes)
 func _try_use_card(player_index: int, card_node: Node) -> void:
@@ -214,10 +230,18 @@ func _try_use_card(player_index: int, card_node: Node) -> void:
 		return
 	var player = players[player_index]
 	var data : Dictionary = card_node.get_card_data()
+
+	# Block passive curse cards
+	var name = data.get("name", "")
+	if name == "CorruptedScript":
+		print("'%s' is a passive curse card and cannot be played." % name)
+		return
+
 	var cost = data.get("cost", 0)
 	if player.bandwidth < cost:
-		print("Not enough bandwidth to use '%s' (cost %d)" % [data.get("name","?"), cost])
+		print("Not enough bandwidth to use '%s' (cost %d)" % [name, cost])
 		return
+
 
 	player.bandwidth = max(0, player.bandwidth - cost)
 	player.packetloss = min(100, player.packetloss + USE_PACKETLOSS_GAIN)

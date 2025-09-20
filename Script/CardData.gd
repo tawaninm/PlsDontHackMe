@@ -10,12 +10,10 @@ func apply_effect(game_manager, player, card_data: Dictionary) -> void:
 			print("Cat → Player skips 2 turns")
 
 		"CorruptedScript":
-			if not card_data.has("status_applied"):
-				card_data["status_applied"] = true
-				if not player.has("effects"):
-					player.effects = []
-				player.effects.append({"type": "corrupted", "value": 2})
-				print("CorruptedScript applied")
+			# Do nothing here – effect is handled each turn
+			print("CorruptedScript added to hand (passive curse)")
+
+
 
 		"VirusAttack":
 			var target_index = (game_manager.current_player_index + 1) % game_manager.players.size()
@@ -25,8 +23,9 @@ func apply_effect(game_manager, player, card_data: Dictionary) -> void:
 
 		"Overclock":
 			player.bandwidth = min(player.bandwidth + 8, game_manager.MAX_BANDWIDTH)
-			player.packetloss += 30
-			print("Overclock → Player gains +8 bandwidth, +30 packetloss")
+			player.packetloss += 40
+			print("Overclock → Player gains +8 bandwidth, +40 packetloss")
+
 
 		_:
 			print("Unknown card effect:", name)

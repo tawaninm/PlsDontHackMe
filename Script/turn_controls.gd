@@ -1,8 +1,8 @@
 # res://Scripts/turn_controls.gd
 extends Control
 
-@onready var btn_draw: Button = $HBoxContainer/DrawButton
-@onready var btn_skip: Button = $HBoxContainer/SkipButton
+@onready var btn_draw: Button = $DrawButton
+@onready var btn_skip: Button = $SkipButton
 
 func _ready() -> void:
 	# Defensive: make sure nodes exist

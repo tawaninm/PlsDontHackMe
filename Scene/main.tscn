@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://b7wlgwr6spoua"]
+[gd_scene load_steps=14 format=3 uid="uid://b7wlgwr6spoua"]
 
 [ext_resource type="Script" uid="uid://wf8xef8mvt6q" path="res://Script/card_manager.gd" id="1_56fl5"]
 [ext_resource type="Script" uid="uid://bwtg0fuqx2de5" path="res://Script/main.gd" id="1_75buv"]
@@ -20,6 +20,8 @@ glow_enabled = true
 glow_intensity = 1.25
 glow_bloom = 0.2
 glow_hdr_threshold = 0.72
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3pt4j"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_75buv")
@@ -86,12 +88,6 @@ layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="DrawButton" type="Button" parent="TurnControls/HBoxContainer"]
-layout_mode = 2
-
-[node name="SkipButton" type="Button" parent="TurnControls/HBoxContainer"]
-layout_mode = 2
-
 [node name="HealthLabel1" type="Label" parent="TurnControls/HBoxContainer"]
 layout_mode = 2
 
@@ -100,6 +96,23 @@ layout_mode = 2
 
 [node name="PacketlossLabel1" type="Label" parent="TurnControls/HBoxContainer"]
 layout_mode = 2
+
+[node name="DrawButton" type="Button" parent="TurnControls"]
+layout_mode = 2
+offset_right = 8.0
+offset_bottom = 40.0
+
+[node name="SkipButton" type="Button" parent="TurnControls"]
+layout_mode = 2
+offset_left = 1387.0
+offset_top = 1006.0
+offset_right = 1585.0
+offset_bottom = 1069.0
+theme_override_colors/font_color = Color(1.657, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.3, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_3pt4j")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_3pt4j")
+text = "SKIP"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
