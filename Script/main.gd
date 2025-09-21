@@ -29,7 +29,6 @@ var current_player_index: int = 0
 var turn_count: int = 0
 
 func _ready() -> void:
-	# assign scene children (no duplicate names)
 	card_manager = $CardManager
 	deck = $Board/Draw
 	player_hands = [
@@ -135,7 +134,7 @@ func register_scene_nodes(cm_node: Node, hands_arr: Array, d_node: Node, ui_arr:
 		if not deck.is_connected("draw_requested", Callable(self, "_on_deck_draw_requested")):
 			deck.connect("draw_requested", Callable(self, "_on_deck_draw_requested"))
 
-	# inject self (gm) into nodes that expose set_gm
+	# inject gm to nodes that accept it
 	if card_manager and card_manager.has_method("set_gm"):
 		card_manager.set_gm(self)
 	if turn_controls and turn_controls.has_method("set_gm"):
@@ -207,7 +206,7 @@ func end_turn() -> void:
 	start_turn()
 
 # ----------------------------
-# Input -> card selection
+# Input -> card selection (now handles left & right click centrally)
 # ----------------------------
 func card_clicked_from_input_at_position(pos: Vector2, button_index: int) -> void:
 	var space_state = get_world_2d().direct_space_state
@@ -225,16 +224,28 @@ func card_clicked_from_input_at_position(pos: Vector2, button_index: int) -> voi
 	if not card_node or not card_node.has_method("get_card_data"):
 		return
 
+	# Guard: ensure the card is in the current player's logical hand (prevents double-calls)
+	var player = players[current_player_index]
+	if not (card_node in player.hand):
+		# card not owned by player or already played/removed; ignore
+		print("card_clicked: card not in player's hand, ignoring.")
+		return
+
 	if button_index == MOUSE_BUTTON_LEFT:
 		var data = card_node.get_card_data()
 		if data.get("name") == "CorruptedScript":
 			print("CorruptedScript is a passive curse and cannot be used.")
 			return
+		_try_use_card(current_player_index, card_node)
+	elif button_index == MOUSE_BUTTON_RIGHT:
+		# Attempt to throw away (right click)
+		if can_throw_card(player):
+			_try_throw_card(current_player_index, card_node)
 		else:
-			_try_use_card(current_player_index, card_node)
+			print("Not enough bandwidth to throw a card.")
 
 # ----------------------------
-# Card usage
+# Card usage (with guards and updated UI calls)
 # ----------------------------
 func _try_use_card(player_index: int, card_node: Node) -> void:
 	if player_index < 0 or player_index >= players.size():
@@ -242,8 +253,10 @@ func _try_use_card(player_index: int, card_node: Node) -> void:
 	var player = players[player_index]
 	var data : Dictionary = card_node.get_card_data()
 
+	# Block passive curse cards
 	var name = data.get("name", "")
 	if name == "CorruptedScript":
+		print("'%s' is a passive curse card and cannot be played." % name)
 		return
 
 	var cost = data.get("cost", 0)
@@ -251,14 +264,38 @@ func _try_use_card(player_index: int, card_node: Node) -> void:
 		print("Not enough bandwidth to use '%s' (cost %d)" % [name, cost])
 		return
 
+	# --- Pay cost ---
 	player.bandwidth = max(0, player.bandwidth - cost)
 	player.packetloss = min(100, player.packetloss + USE_PACKETLOSS_GAIN)
 
+	# --- Apply card effect ---
 	if Engine.has_singleton("CardData"):
 		CardData.apply_effect(self, player, data)
 	elif get_tree().get_current_scene() and get_tree().get_current_scene().has_node("CardData"):
 		get_tree().get_current_scene().get_node("CardData").apply_effect(self, player, data)
 
+	# --- Remove card from hand ---
+	if card_node in player.hand:
+		player.hand.erase(card_node)
+	if player_index < player_hands.size():
+		var hand_node = player_hands[player_index]
+		if hand_node and hand_node.has_method("remove_card_from_hand"):
+			hand_node.remove_card_from_hand(card_node)
+		else:
+			card_node.queue_free()
+	else:
+		card_node.queue_free()
+
+	print("Player %d played '%s' (cost %d). BW:%d PL:%d" %
+		[player_index + 1, data.get("name","?"), cost, player.bandwidth, player.packetloss])
+
+	# --- Always update UI after changes ---
+	update_ui()
+	end_turn()
+
+
+
+	# remove from logical hand and visual
 	if card_node in player.hand:
 		player.hand.erase(card_node)
 	if player_index < player_hands.size():
@@ -283,12 +320,13 @@ func _try_throw_card(player_index: int, card_node: Node) -> void:
 		print("Not enough bandwidth to throw a card (need %d)" % THROW_BANDWIDTH_COST)
 		return
 
+	# --- Apply discard costs/benefits ---
 	player.bandwidth = max(0, player.bandwidth - THROW_BANDWIDTH_COST)
 	player.packetloss = max(0, player.packetloss - THROW_PACKETLOSS_REDUCE)
 
+	# --- Remove from hand ---
 	if card_node in player.hand:
 		player.hand.erase(card_node)
-
 	if player_index < player_hands.size():
 		var hand_node = player_hands[player_index]
 		if hand_node and hand_node.has_method("remove_card_from_hand"):
@@ -298,10 +336,14 @@ func _try_throw_card(player_index: int, card_node: Node) -> void:
 	else:
 		card_node.queue_free()
 
-	print("Player %d threw away '%s' (BW now %d, PL %d)" % [player_index + 1, card_node.get_card_data().get("name","?"), player.bandwidth, player.packetloss])
+	print("Player %d threw away '%s' (BW now %d, PL %d)" %
+		[player_index + 1, card_node.get_card_data().get("name","?"),
+		player.bandwidth, player.packetloss])
 
+	# --- Always update UI after changes ---
 	update_ui()
 	end_turn()
+
 
 # ----------------------------
 # Actions (draw / skip)
@@ -316,9 +358,9 @@ func player_draw_card(player_index: int) -> void:
 		print("Player %d cannot draw: hand full" % [player_index + 1])
 		return
 
+	# --- Pick random card ---
 	var card_types = ["Cat", "CorruptedScript", "VirusAttack", "Overclock"]
 	var name = card_types[randi() % card_types.size()]
-
 	var data := {
 		"name": name,
 		"cost": get_card_cost(name),
@@ -327,15 +369,12 @@ func player_draw_card(player_index: int) -> void:
 	var card_node = CARD_SCENE.instantiate()
 	if card_node.has_method("set_card_data"):
 		card_node.set_card_data(data)
-	# inject gm to card if supported
-	if card_node.has_method("set_gm"):
-		card_node.set_gm(self)
-	# register with card manager for hover etc
-	if card_manager and card_manager.has_method("register_card_instance"):
-		card_manager.register_card_instance(card_node)
+	else:
+		card_node.set("card_type", name)
 
 	player.hand.append(card_node)
 
+	# --- Add visually ---
 	if player_index < player_hands.size():
 		var hand_node = player_hands[player_index]
 		if hand_node and hand_node.has_method("add_card_to_hand"):
@@ -346,15 +385,21 @@ func player_draw_card(player_index: int) -> void:
 				hand_node.add_child(card_node)
 			else:
 				add_child(card_node)
+			print("Card '%s' added to scene for Player %d (fallback path)." % [name, player_index + 1])
 	else:
 		add_child(card_node)
+		print("Card '%s' added to root for Player %d (no PlayerHand node assigned)." % [name, player_index + 1])
 
+	# --- Draw rewards ---
 	player.bandwidth = min(player.bandwidth + DRAW_BANDWIDTH_GAIN, MAX_BANDWIDTH)
 	player.packetloss = max(0, player.packetloss - DRAW_PACKETLOSS_REDUCE)
 
 	print(">>> Player %d drew %s (BW:%d PL:%d)" % [player_index + 1, name, player.bandwidth, player.packetloss])
+
+	# --- Always update UI after changes ---
 	update_ui()
 	end_turn()
+
 
 func player_skip_turn(player_index: int) -> void:
 	if player_index < 0 or player_index >= players.size():
@@ -371,10 +416,13 @@ func player_skip_turn(player_index: int) -> void:
 func update_ui() -> void:
 	for i in range(players.size()):
 		var p = players[i]
+		print("Player %d | HP:%d BW:%d PL:%d | Hand:%d" %
+			[i + 1, p.integrity, p.bandwidth, p.packetloss, p.hand.size()])
+
+		# update UI node if it exists
 		if i < ui_nodes.size() and ui_nodes[i] and ui_nodes[i].has_method("update_ui_for_player"):
 			ui_nodes[i].update_ui_for_player(p)
-		else:
-			print("Player %d | HP: %d | BW: %d | PL: %d | Hand: %d" % [i + 1, p.integrity, p.bandwidth, p.packetloss, p.hand.size()])
+
 
 # ----------------------------
 # Compatibility wrappers

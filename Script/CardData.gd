@@ -16,8 +16,9 @@ func apply_effect(game_manager, player, card_data: Dictionary) -> void:
 			print("VirusAttack → Player", target_index+1, "-5 integrity")
 		"Overclock":
 			player.bandwidth = min(player.bandwidth + 8, game_manager.MAX_BANDWIDTH)
-			player.packetloss = min(100, player.packetloss + 40)
+			player.packetloss = min(100, player.packetloss + 40)  # make sure this line is here
 			print("Overclock → Player gains +8 bandwidth, +40 packetloss")
+
 		_:
 			print("Unknown card effect:", name)
 

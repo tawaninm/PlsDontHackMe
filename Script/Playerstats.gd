@@ -18,9 +18,7 @@ func _ready() -> void:
 			lbl.bbcode_enabled = true
 
 func update_ui_for_player(p) -> void:
-	if integrity:
-		integrity.bbcode_text = "[color=#e5b931]%d[/color]" % p.integrity
-	if bandwidth:
-		bandwidth.bbcode_text = "[color=#e5b931]%d[/color]" % p.bandwidth
-	if packetloss:
-		packetloss.bbcode_text = "[color=#e5b931]%d[/color]" % p.packetloss
+	integrity.bbcode_text  = "[color=#e5b931]%d[/color]" % p.integrity
+	bandwidth.bbcode_text  = "[color=#e5b931]%d[/color]" % p.bandwidth
+	packetloss.bbcode_text = "[color=#e5b931]%d[/color]" % p.packetloss
+	print("UI Update -> HP:%d BW:%d PL:%d" % [p.integrity, p.bandwidth, p.packetloss])
