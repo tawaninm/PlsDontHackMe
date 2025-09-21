@@ -1,17 +1,26 @@
-# res://Scripts/PlayerStats.gd
 extends Control
 
-@onready var health_label = $"../../../TurnControls/HBoxContainer/HealthLabel1"
-@onready var bandwidth_label = $"../../../TurnControls/HBoxContainer/BandwidthLabel1"
-@onready var packetloss_label = $"../../../TurnControls/HBoxContainer/PacketlossLabel1"
+@export var integrity_path: NodePath = "Control/Health1"
+@export var bandwidth_path: NodePath = "Control/Mana1"
+@export var packetloss_path: NodePath = "Control/Error1"
 
-func update_ui(player_dict: Dictionary) -> void:
-	if not player_dict:
-		return
-	health_label.bbcode_enabled = true
-	bandwidth_label.bbcode_enabled = true
-	packetloss_label.bbcode_enabled = true
+var gm: Node = null
+@onready var integrity: RichTextLabel = $"../../../Control/Health1"
+@onready var bandwidth: RichTextLabel = $"../../../Control/Mana1"
+@onready var packetloss: RichTextLabel = $"../../../Control/Error1"
 
-	health_label.bbcode_text = "[color=#e5b931]%d[/color]" % player_dict.integrity if player_dict.has("integrity") else "[color=#e5b931]0[/color]"
-	bandwidth_label.bbcode_text = "[color=#e5b931]%d[/color]" % player_dict.bandwidth if player_dict.has("bandwidth") else "[color=#e5b931]0[/color]"
-	packetloss_label.bbcode_text = "[color=#e5b931]%d%%[/color]" % player_dict.packetloss if player_dict.has("packetloss") else "[color=#e5b931]0%[/color]"
+func set_gm(game_manager: Node) -> void:
+	gm = game_manager
+
+func _ready() -> void:
+	for lbl in [integrity, bandwidth, packetloss]:
+		if lbl:
+			lbl.bbcode_enabled = true
+
+func update_ui_for_player(p) -> void:
+	if integrity:
+		integrity.bbcode_text = "[color=#e5b931]%d[/color]" % p.integrity
+	if bandwidth:
+		bandwidth.bbcode_text = "[color=#e5b931]%d[/color]" % p.bandwidth
+	if packetloss:
+		packetloss.bbcode_text = "[color=#e5b931]%d[/color]" % p.packetloss
