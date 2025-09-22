@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bs8gbtjmqmads"
+path="res://.godot/imported/RPReplay_Final1758375732 (online-audio-converter.com).mp3-fcceb5289954e91a80fd94eb446f8732.mp3str"
+
+[deps]
+
+source_file="res://Asset/Music/RPReplay_Final1758375732 (online-audio-converter.com).mp3"
+dest_files=["res://.godot/imported/RPReplay_Final1758375732 (online-audio-converter.com).mp3-fcceb5289954e91a80fd94eb446f8732.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

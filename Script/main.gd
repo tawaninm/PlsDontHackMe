@@ -173,6 +173,7 @@ func _ready() -> void:
 		$CanvasLayer/UI/PlayerUI3
 	]
 	turn_controls = $TurnControls
+		
 
 	register_scene_nodes(card_manager, player_hands, deck, ui_nodes, turn_controls)
 	start_game()
@@ -417,8 +418,6 @@ func start_turn() -> void:
 
 	# --- Start turn normally ---
 	print(">>> Player %d's turn begins." % (current_player_index + 1))
-	_add_bandwidth(current_player_index, DRAW_BANDWIDTH_GAIN)
-	_add_packetloss(current_player_index, -DRAW_PACKETLOSS_REDUCE)
 	_sync_player_to_vars(current_player_index)
 	update_ui()
 
@@ -526,30 +525,33 @@ func try_throw_card(card: Node) -> void:
 func _try_use_card(player_index: int, card_node: Node) -> void:
 	if not _valid_player_index(player_index):
 		return
-
 	var player = players[player_index]
-	var data : Dictionary = card_node.get_card_data()
-	var name = data.get("name", "")
-	var cost = data.get("cost", 0)
+	var data: Dictionary = card_node.get_card_data()
 
-	# CorruptedScript is passive only
-	if name == "CorruptedScript":
+	var name: String = str(data.get("name", ""))
+	if name == "CorruptedScript" or name == "Firewall":
 		print("'%s' is passive and cannot be played." % name)
 		return
 
-	# Bandwidth check
+	# --- Cost from card data or fallback ---
+	var cost: int = int(data.get("cost", get_card_cost(name)))
+
 	if _get_bandwidth(player_index) < cost:
 		print("Not enough bandwidth to use '%s' (cost %d)" % [name, cost])
 		return
 
-	# --- Pay cost ---
-	_add_bandwidth(player_index, -cost)
+# --- Pay cost ---
+	if cost > 0:
+		_add_bandwidth(player_index, -cost)
+
+	# --- Always add packetloss ---
 	_add_packetloss(player_index, USE_PACKETLOSS_GAIN)
 
-	# --- Apply effect via CardData autoload ---
-	CardData.apply_effect(self, player, data, player_index)
+	# --- Apply card effect ---
+	if CardData.has_method("apply_effect"):
+		CardData.apply_effect(self, player, data, player_index)
 
-	# --- Remove from hand + visuals ---
+	# --- Remove from hand ---
 	if card_node in player.hand:
 		player.hand.erase(card_node)
 	if player_index < player_hands.size():
@@ -567,6 +569,7 @@ func _try_use_card(player_index: int, card_node: Node) -> void:
 	_sync_player_to_vars(player_index)
 	update_ui()
 	call_deferred("end_turn")
+
 
 
 
@@ -613,7 +616,7 @@ func player_draw_card(player_index: int) -> void:
 		print("Player %d cannot draw: hand full" % [player_index + 1])
 		return
 
-	var card_types = ["WormVirus", "CorruptedScript", "VirusAttack", "Overclock", "Firewall", "NetworkUpgrade", "DDosAttack"]
+	var card_types = ["WormVirus", "CorruptedScript", "VirusAttack", "Overclock", "Firewall", "NetworkUpgrade", ]#"DDosAttack"
 	var name = card_types[randi() % card_types.size()]
 	var data := {"name": name, "cost": get_card_cost(name)}
 
@@ -775,7 +778,7 @@ func draw_cards_silent(player_index: int, n: int) -> void:
 	var player = players[player_index]
 	for i in range(n):
 		# instantiate a random card or you may want to choose specific cards
-		var card_types = ["WormVirus", "CorruptedScript", "VirusAttack", "Overclock", "Firewall", "NetworkUpgrade", "DDosAttack"]
+		var card_types = ["WormVirus", "CorruptedScript", "VirusAttack", "Overclock", "Firewall", "NetworkUpgrade"]
 		var name = card_types[randi() % card_types.size()]
 		var data := {"name": name, "cost": get_card_cost(name)}
 
@@ -808,3 +811,14 @@ func draw_cards_silent(player_index: int, n: int) -> void:
 		_syncing = false
 	if ui_nodes.size() > 0:
 		update_ui()
+
+
+func _on_skip_button_pressed() -> void:
+	if current_player_index == -1:
+		return
+	var player = players[current_player_index]
+	if not player.is_human:
+		return  # AI should not trigger this
+
+	print("Player %d pressed Skip Button → skipping turn." % (current_player_index + 1))
+	call_deferred("end_turn")

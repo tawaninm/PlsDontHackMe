@@ -1,6 +1,5 @@
 extends Control
 
-@onready var btn_draw: Button = $DrawButton
 @onready var btn_skip: Button = $SkipButton
 
 var gm: Node = null
@@ -9,8 +8,6 @@ func set_gm(game_manager: Node) -> void:
 	gm = game_manager
 
 func _ready() -> void:
-	if btn_draw:
-		btn_draw.connect("pressed", Callable(self, "_on_draw_pressed"))
 	if btn_skip:
 		btn_skip.connect("pressed", Callable(self, "_on_skip_pressed"))
 	hide()
