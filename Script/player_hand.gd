@@ -1,4 +1,4 @@
-extends Node2D
+extends Node2D 
 
 @export var player_index: int = 0
 @export var hand_y_position: int = 800

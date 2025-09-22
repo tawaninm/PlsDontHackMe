@@ -1,7 +1,7 @@
 extends Node2D
 
 # =============================
-# --- CONFIG / BALANCE KNOBS ---
+# CONFIG / BALANCE
 # =============================
 const MAX_HAND_SIZE := 15
 const MAX_INTEGRITY := 100
@@ -22,7 +22,7 @@ const SKIP_BANDWIDTH_GAIN := 2
 const CARD_SCENE := preload("res://Scene/card.tscn")
 
 # ----------------------------
-# Per-player simple variables (kept in sync with players[])
+# Simple per-player vars (kept synced for UI convenience)
 # ----------------------------
 var player1_integrity := STARTING_INTEGRITY
 var player1_bandwidth := STARTING_BANDWIDTH
@@ -39,20 +39,17 @@ var player3_bandwidth := STARTING_BANDWIDTH
 var player3_packetloss := STARTING_PACKETLOSS
 var player3_skip_turns := 0
 
-# scene node references (members only; assigned in _ready)
+# ----------------------------
+# Scene nodes
+# ----------------------------
 var card_manager: Node = null
 var player_hands: Array = []
 var deck: Node = null
 var ui_nodes: Array = []
 var turn_controls: Node = null
 
-# Keep the original Player class & players array for compatibility
-var players: Array = []
-var current_player_index: int = 0
-var turn_count: int = 0
-
 # ----------------------------
-# Player class (kept for compatibility)
+# Player data + turn rotation
 # ----------------------------
 class Player:
 	var integrity = 0
@@ -72,8 +69,18 @@ class Player:
 		status_effects = []
 		is_human = human
 
+var players: Array = []
+var alive_players: Array = []         # indices into players[] who are alive (>0 HP)
+var current_alive_idx: int = 0       # index into alive_players
+var current_player_index: int = -1   # convenience mirror -> players[current_player_index]
+var turn_count: int = 0
+
+# runtime flags
+var _syncing: bool = false
+var game_over: bool = false
+
 # ----------------------------
-# Prep values helper
+# Utility / prep
 # ----------------------------
 func _get_prep_values() -> Dictionary:
 	var result := {
@@ -126,12 +133,10 @@ func register_scene_nodes(cm_node: Node, hands_arr: Array, d_node: Node, ui_arr:
 	ui_nodes = ui_arr
 	turn_controls = tc_node
 
-	# connect deck draw signal if present
 	if deck and deck.has_signal("draw_requested"):
 		if not deck.is_connected("draw_requested", Callable(self, "_on_deck_draw_requested")):
 			deck.connect("draw_requested", Callable(self, "_on_deck_draw_requested"))
 
-	# inject gm to nodes that accept it
 	if card_manager and card_manager.has_method("set_gm"):
 		card_manager.set_gm(self)
 	if turn_controls and turn_controls.has_method("set_gm"):
@@ -147,16 +152,18 @@ func register_scene_nodes(cm_node: Node, hands_arr: Array, d_node: Node, ui_arr:
 			u.set_gm(self)
 
 func _on_deck_draw_requested() -> void:
+	if current_player_index == -1:
+		return
 	player_draw_card(current_player_index)
 
 # ----------------------------
-# Startup
+# Ready + start
 # ----------------------------
 func _ready() -> void:
 	card_manager = $CardManager
 	deck = $Board/Draw
 	player_hands = [
-		$PlayerHand,
+		$PlayerHand1,
 		$PlayerHand2,
 		$PlayerHand3
 	]
@@ -171,7 +178,7 @@ func _ready() -> void:
 	start_game()
 
 # ----------------------------
-# Utility helpers (sync players[] <-> simple vars)
+# Helpers: valid / sync / alive list
 # ----------------------------
 func _valid_player_index(i: int) -> bool:
 	return i >= 0 and i < players.size()
@@ -180,6 +187,9 @@ func _sync_player_to_vars(i: int) -> void:
 	if not _valid_player_index(i):
 		return
 	var p = players[i]
+	if p.integrity < 0:
+		p.integrity = 0
+
 	match i:
 		0:
 			player1_integrity = p.integrity
@@ -201,29 +211,84 @@ func _sync_all_players_to_vars() -> void:
 	for i in range(players.size()):
 		_sync_player_to_vars(i)
 
+func _rebuild_alive_players() -> void:
+	alive_players.clear()
+	for i in range(players.size()):
+		if players[i].integrity > 0:
+			alive_players.append(i)
+	# normalize current_alive_idx
+	current_alive_idx = clamp(current_alive_idx, 0, max(0, alive_players.size() - 1))
+	# update mirror
+	_update_current_player_from_alive()
+
+func _find_next_alive(start_idx: int) -> int:
+	if players.size() == 0:
+		return -1
+	var n = players.size()
+	var i = (start_idx + 1) % n
+	var count = 0
+	while count < n:
+		if players[i].integrity > 0:
+			return i
+		i = (i + 1) % n
+		count += 1
+	return -1
+
+func _update_current_player_from_alive() -> void:
+	if alive_players.size() == 0:
+		current_player_index = -1
+		return
+	if current_alive_idx < 0:
+		current_alive_idx = 0
+	elif current_alive_idx >= alive_players.size():
+		current_alive_idx = alive_players.size() - 1
+	current_player_index = alive_players[current_alive_idx]
+
+# ----------------------------
+# Mutators (guarded sync)
+# ----------------------------
 func _add_integrity(i: int, amount: int) -> void:
 	if not _valid_player_index(i):
 		return
 	players[i].integrity = clamp(players[i].integrity + amount, 0, MAX_INTEGRITY)
-	_sync_player_to_vars(i)
+
+	if not _syncing:
+		_syncing = true
+		_sync_player_to_vars(i)
+		_syncing = false
+
+	if players[i].integrity <= 0:
+		# eliminate only if still tracked as alive
+		if i in alive_players:
+			eliminate_player(i)
+			check_winner()
 
 func _add_bandwidth(i: int, amount: int) -> void:
 	if not _valid_player_index(i):
 		return
 	players[i].bandwidth = clamp(players[i].bandwidth + amount, 0, MAX_BANDWIDTH)
-	_sync_player_to_vars(i)
+	if not _syncing:
+		_syncing = true
+		_sync_player_to_vars(i)
+		_syncing = false
 
 func _add_packetloss(i: int, amount: int) -> void:
 	if not _valid_player_index(i):
 		return
 	players[i].packetloss = clamp(players[i].packetloss + amount, 0, MAX_PACKETLOSS)
-	_sync_player_to_vars(i)
+	if not _syncing:
+		_syncing = true
+		_sync_player_to_vars(i)
+		_syncing = false
 
 func _add_skip_turns(i: int, amount: int) -> void:
 	if not _valid_player_index(i):
 		return
 	players[i].skip_turns = max(0, players[i].skip_turns + amount)
-	_sync_player_to_vars(i)
+	if not _syncing:
+		_syncing = true
+		_sync_player_to_vars(i)
+		_syncing = false
 
 func _get_integrity(i: int) -> int:
 	if not _valid_player_index(i):
@@ -251,7 +316,7 @@ func _get_player_hand(i: int) -> Array:
 	return players[i].hand
 
 # ----------------------------
-# Card cost lookup
+# Card cost helper
 # ----------------------------
 func get_card_cost(name: String) -> int:
 	match name:
@@ -265,7 +330,6 @@ func get_card_cost(name: String) -> int:
 # Game flow
 # ----------------------------
 func start_game() -> void:
-	# Initialize players if empty
 	if players.is_empty():
 		players = [
 			Player.new(true),
@@ -277,27 +341,60 @@ func start_game() -> void:
 		players[0].bandwidth = prep_stats.bw
 		players[0].packetloss = prep_stats.pl
 
-	# ensure simple vars reflect players[]
 	_sync_all_players_to_vars()
 
-	current_player_index = 0
-	print("Game started with %d players" % players.size())
-	start_turn()
+	# build alive players
+	alive_players.clear()
+	for i in range(players.size()):
+		if players[i].integrity > 0:
+			alive_players.append(i)
+
+	current_alive_idx = 0
+	_update_current_player_from_alive()
+
+	if current_player_index == -1:
+		game_over = true
+		print("No players alive at start.")
+		return
+
+	print("Game started with %d players (alive=%d)" % [players.size(), alive_players.size()])
+	call_deferred("start_turn")
 
 func start_turn() -> void:
-	if not _valid_player_index(current_player_index):
+	if game_over:
+		return
+
+	# --- Ensure current player is valid ---
+	if current_player_index == -1 or not _valid_player_index(current_player_index):
+		_rebuild_alive_players()
+		_update_current_player_from_alive()
+		if current_player_index == -1:
+			check_winner()
+			return
+
+	check_winner()
+	if game_over:
 		return
 
 	var player = players[current_player_index]
 
-	# handle skip turns
-	if _get_skip_turns(current_player_index) > 0:
-		_add_skip_turns(current_player_index, -1)
-		print("Player %d skips turn. Remaining skips: %d" % [current_player_index + 1, _get_skip_turns(current_player_index)])
-		end_turn()
+	# --- If dead, skip safely ---
+	if player.integrity <= 0:
+		print("Player %d is eliminated and skips their turn." % (current_player_index + 1))
+		call_deferred("end_turn")
 		return
 
-	# corrupted card passive effect: lose 2 integrity per corrupted in hand
+	# --- Skip counter ---
+	if player.skip_turns > 0:
+		player.skip_turns -= 1
+		print("Player %d skips turn. Remaining skips: %d" % [current_player_index + 1, player.skip_turns])
+		_add_bandwidth(current_player_index, DRAW_BANDWIDTH_GAIN)
+		_sync_player_to_vars(current_player_index)
+		update_ui()
+		call_deferred("end_turn")
+		return
+
+	# --- CorruptedScript passive ---
 	var corrupted_count := 0
 	for card in player.hand:
 		if card and card.has_method("get_card_data"):
@@ -308,26 +405,60 @@ func start_turn() -> void:
 	if corrupted_count > 0:
 		var loss = 2 * corrupted_count
 		_add_integrity(current_player_index, -loss)
-		print("CorruptedScript: Player %d loses %d integrity (%d in hand)" %
-			[current_player_index + 1, loss, corrupted_count])
+		print("CorruptedScript: Player %d loses %d integrity (%d in hand)" % [current_player_index + 1, loss, corrupted_count])
 
-	# show turn controls for human players
+		if players[current_player_index].integrity <= 0:
+			check_winner()
+			call_deferred("end_turn")
+			return
+
+	# --- Start turn normally ---
+	print(">>> Player %d's turn begins." % (current_player_index + 1))
+	_add_bandwidth(current_player_index, DRAW_BANDWIDTH_GAIN)
+	_add_packetloss(current_player_index, -DRAW_PACKETLOSS_REDUCE)
+	_sync_player_to_vars(current_player_index)
+	update_ui()
+
+	# --- Show UI for humans, auto-skip AI ---
 	if player.is_human:
 		if turn_controls:
 			turn_controls.show()
 	else:
-		player_skip_turn(current_player_index)
+		call_deferred("player_skip_turn", current_player_index)
+
+
+
 
 func end_turn() -> void:
+	if game_over:
+		return
+
 	if turn_controls:
 		turn_controls.hide()
-	current_player_index = (current_player_index + 1) % players.size()
-	start_turn()
+
+	# if no alive players, check winner
+	if alive_players.size() == 0:
+		check_winner()
+		return
+
+	# advance current_alive_idx and sync mirror
+	current_alive_idx = (current_alive_idx + 1) % alive_players.size()
+	_update_current_player_from_alive()
+
+	# if only one left, check and show winner
+	if alive_players.size() == 1:
+		check_winner()
+		return
+
+	# schedule next start
+	if not game_over:
+		call_deferred("start_turn")
 
 # ----------------------------
-# Input -> card selection (left & right click)
+# Input / card clicks
 # ----------------------------
 func card_clicked_from_input_at_position(pos: Vector2, button_index: int) -> void:
+	# keep original implementation if you need it; prefer Card.gd -> gm.try_play_card / try_throw_card
 	var space_state = get_world_2d().direct_space_state
 	var params = PhysicsPointQueryParameters2D.new()
 	params.position = pos
@@ -342,45 +473,65 @@ func card_clicked_from_input_at_position(pos: Vector2, button_index: int) -> voi
 	var card_node = collider.get_parent()
 	if not card_node or not card_node.has_method("get_card_data"):
 		return
-
-	# Guard: ensure the card is in the current player's logical hand (prevents double-calls)
-	if not _valid_player_index(current_player_index):
+	if current_player_index == -1:
 		return
 	var player = players[current_player_index]
 	if not (card_node in player.hand):
-		# card not owned by player or already played/removed; ignore
 		print("card_clicked: card not in player's hand, ignoring.")
 		return
 
 	if button_index == MOUSE_BUTTON_LEFT:
 		var data = card_node.get_card_data()
 		if data.get("name") == "CorruptedScript":
-			print("CorruptedScript is a passive curse and cannot be used.")
+			print("CorruptedScript is passive and cannot be used.")
 			return
 		_try_use_card(current_player_index, card_node)
 	elif button_index == MOUSE_BUTTON_RIGHT:
-		# Attempt to throw away (right click)
-		if can_throw_card(player):
+		if can_throw_card(current_player_index):
 			_try_throw_card(current_player_index, card_node)
 		else:
 			print("Not enough bandwidth to throw a card.")
 
 # ----------------------------
-# Card usage (with guards and updated UI calls)
+# Try-play / try-throw (used by Card.gd)
+# ----------------------------
+func try_play_card(card: Node) -> void:
+	if current_player_index == -1 or not _valid_player_index(current_player_index):
+		return
+	var player = players[current_player_index]
+	var data = card.get_card_data()
+	if can_use_card(current_player_index, data):
+		_try_use_card(current_player_index, card)
+	else:
+		print("Not enough bandwidth to play:", card.card_type)
+
+func try_throw_card(card: Node) -> void:
+	if current_player_index == -1 or not _valid_player_index(current_player_index):
+		return
+	var player = players[current_player_index]
+	if can_throw_card(current_player_index):
+		_try_throw_card(current_player_index, card)
+	else:
+		print("Not enough bandwidth to throw:", card.card_type)
+
+# ----------------------------
+# Card usage internals
 # ----------------------------
 func _try_use_card(player_index: int, card_node: Node) -> void:
 	if not _valid_player_index(player_index):
 		return
+
 	var player = players[player_index]
 	var data : Dictionary = card_node.get_card_data()
-
-	# Block passive curse cards
 	var name = data.get("name", "")
+	var cost = data.get("cost", 0)
+
+	# CorruptedScript is passive only
 	if name == "CorruptedScript":
-		print("'%s' is a passive curse card and cannot be played." % name)
+		print("'%s' is passive and cannot be played." % name)
 		return
 
-	var cost = data.get("cost", 0)
+	# Bandwidth check
 	if _get_bandwidth(player_index) < cost:
 		print("Not enough bandwidth to use '%s' (cost %d)" % [name, cost])
 		return
@@ -389,14 +540,10 @@ func _try_use_card(player_index: int, card_node: Node) -> void:
 	_add_bandwidth(player_index, -cost)
 	_add_packetloss(player_index, USE_PACKETLOSS_GAIN)
 
-	# --- Apply card effect ---
-	# NOTE: keep passing the Player object for backwards compatibility
-	if Engine.has_singleton("CardData"):
-		CardData.apply_effect(self, player, data)
-	elif get_tree().get_current_scene() and get_tree().get_current_scene().has_node("CardData"):
-		get_tree().get_current_scene().get_node("CardData").apply_effect(self, player, data)
+	# --- Apply effect via CardData autoload ---
+	CardData.apply_effect(self, player, data, player_index)
 
-	# --- Remove card from logical hand + visual ---
+	# --- Remove from hand + visuals ---
 	if card_node in player.hand:
 		player.hand.erase(card_node)
 	if player_index < player_hands.size():
@@ -409,11 +556,13 @@ func _try_use_card(player_index: int, card_node: Node) -> void:
 		card_node.queue_free()
 
 	print("Player %d played '%s' (cost %d). BW:%d PL:%d" %
-		[player_index + 1, data.get("name","?"), cost, _get_bandwidth(player_index), _get_packetloss(player_index)])
+		[player_index + 1, name, cost, _get_bandwidth(player_index), _get_packetloss(player_index)])
 
-	# --- Always update UI after changes ---
+	_sync_player_to_vars(player_index)
 	update_ui()
-	end_turn()
+	call_deferred("end_turn")
+
+
 
 func _try_throw_card(player_index: int, card_node: Node) -> void:
 	if not _valid_player_index(player_index):
@@ -423,11 +572,9 @@ func _try_throw_card(player_index: int, card_node: Node) -> void:
 		print("Not enough bandwidth to throw a card (need %d)" % THROW_BANDWIDTH_COST)
 		return
 
-	# --- Apply discard costs/benefits ---
 	_add_bandwidth(player_index, -THROW_BANDWIDTH_COST)
 	_add_packetloss(player_index, -THROW_PACKETLOSS_REDUCE)
 
-	# --- Remove from hand (logical + visual) ---
 	if card_node in player.hand:
 		player.hand.erase(card_node)
 	if player_index < player_hands.size():
@@ -443,12 +590,12 @@ func _try_throw_card(player_index: int, card_node: Node) -> void:
 		[player_index + 1, card_node.get_card_data().get("name","?"),
 		_get_bandwidth(player_index), _get_packetloss(player_index)])
 
-	# --- Always update UI after changes ---
+	_sync_player_to_vars(player_index)
 	update_ui()
-	end_turn()
+	call_deferred("end_turn")
 
 # ----------------------------
-# Actions (draw / skip)
+# Actions: draw / skip
 # ----------------------------
 func player_draw_card(player_index: int) -> void:
 	if not _valid_player_index(player_index):
@@ -460,13 +607,9 @@ func player_draw_card(player_index: int) -> void:
 		print("Player %d cannot draw: hand full" % [player_index + 1])
 		return
 
-	# --- Pick random card ---
 	var card_types = ["Cat", "CorruptedScript", "VirusAttack", "Overclock"]
 	var name = card_types[randi() % card_types.size()]
-	var data := {
-		"name": name,
-		"cost": get_card_cost(name),
-	}
+	var data := {"name": name, "cost": get_card_cost(name)}
 
 	var card_node = CARD_SCENE.instantiate()
 	if card_node.has_method("set_card_data"):
@@ -476,7 +619,6 @@ func player_draw_card(player_index: int) -> void:
 
 	player.hand.append(card_node)
 
-	# --- Add visually ---
 	if player_index < player_hands.size():
 		var hand_node = player_hands[player_index]
 		if hand_node and hand_node.has_method("add_card_to_hand"):
@@ -492,38 +634,33 @@ func player_draw_card(player_index: int) -> void:
 		add_child(card_node)
 		print("Card '%s' added to root for Player %d (no PlayerHand node assigned)." % [name, player_index + 1])
 
-	# --- Draw rewards ---
 	_add_bandwidth(player_index, DRAW_BANDWIDTH_GAIN)
 	_add_packetloss(player_index, -DRAW_PACKETLOSS_REDUCE)
 
-	print(">>> Player %d drew %s (BW:%d PL:%d)" % [player_index + 1, name, _get_bandwidth(player_index), _get_packetloss(player_index)])
-
-	# --- Always update UI after changes ---
+	_sync_player_to_vars(player_index)
 	update_ui()
-	end_turn()
-
 
 func player_skip_turn(player_index: int) -> void:
 	if not _valid_player_index(player_index):
 		return
 	_add_bandwidth(player_index, SKIP_BANDWIDTH_GAIN)
 	print(">>> Player %d skips their turn (+%d BW). BW=%d" % [player_index + 1, SKIP_BANDWIDTH_GAIN, _get_bandwidth(player_index)])
+	_sync_player_to_vars(player_index)
 	update_ui()
-	end_turn()
+	call_deferred("end_turn")
 
 # ----------------------------
 # UI updates
 # ----------------------------
 func update_ui() -> void:
-	# --- Debug printout ---
 	print("Player 1 | HP:%d BW:%d PL:%d" % [player1_integrity, player1_bandwidth, player1_packetloss])
 	print("Player 2 | HP:%d BW:%d PL:%d" % [player2_integrity, player2_bandwidth, player2_packetloss])
 	print("Player 3 | HP:%d BW:%d PL:%d" % [player3_integrity, player3_bandwidth, player3_packetloss])
 
-	# --- Update UI panels if they exist ---
 	if ui_nodes.size() > 0 and ui_nodes[0] and ui_nodes[0].has_method("set_gm"):
 		ui_nodes[0].set_gm(self)
-		ui_nodes[0].update_ui_for_player1()
+		if ui_nodes[0].has_method("update_ui_for_player1"):
+			ui_nodes[0].update_ui_for_player1()
 
 	if ui_nodes.size() > 1 and ui_nodes[1] and ui_nodes[1].has_method("set_gm"):
 		ui_nodes[1].set_gm(self)
@@ -535,18 +672,14 @@ func update_ui() -> void:
 		if ui_nodes[2].has_method("update_ui_for_player3"):
 			ui_nodes[2].update_ui_for_player3()
 
-
-
 # ----------------------------
 # Compatibility wrappers
 # ----------------------------
-# can_use_card accepts either a Player object or an integer index (keeps compatibility)
 func can_use_card(player_or_index, data: Dictionary) -> bool:
 	var cost = data.get("cost", 0)
-	if player_or_index is int:
+	if typeof(player_or_index) == TYPE_INT:
 		return _get_bandwidth(player_or_index) >= cost
 	elif typeof(player_or_index) == TYPE_OBJECT:
-		# assume it's a Player object
 		return player_or_index.bandwidth >= cost
 	elif typeof(player_or_index) == TYPE_DICTIONARY:
 		return int(player_or_index.get("bandwidth", 0)) >= cost
@@ -556,7 +689,7 @@ func use_card(player_index: int, card_node: Node) -> void:
 	_try_use_card(player_index, card_node)
 
 func can_throw_card(player_or_index) -> bool:
-	if player_or_index is int:
+	if typeof(player_or_index) == TYPE_INT:
 		return _get_bandwidth(player_or_index) >= THROW_BANDWIDTH_COST
 	elif typeof(player_or_index) == TYPE_OBJECT:
 		return player_or_index.bandwidth >= THROW_BANDWIDTH_COST
@@ -566,3 +699,66 @@ func can_throw_card(player_or_index) -> bool:
 
 func throw_card(player_index: int, card_node: Node) -> void:
 	_try_throw_card(player_index, card_node)
+
+# ----------------------------
+# Endgame / elimination
+# ----------------------------
+func check_winner() -> void:
+	if game_over:
+		return
+
+	if alive_players.size() == 1:
+		game_over = true
+		var winner_idx = alive_players[0]
+		print("🎉 Player %d wins the game!" % (winner_idx + 1))
+		_show_game_over(winner_idx + 1)
+	elif alive_players.size() == 0:
+		game_over = true
+		print("⚔️ All players eliminated! It's a draw!")
+		_show_game_over(-1)
+
+func _show_game_over(winner: int) -> void:
+	if turn_controls:
+		turn_controls.hide()
+	if winner > 0:
+		print("Game Over → Player %d is the last standing!" % winner)
+	else:
+		print("Game Over → No winners (draw).")
+
+func eliminate_player(player_index: int) -> void:
+	if not _valid_player_index(player_index):
+		return
+	var player = players[player_index]
+
+	# --- Force all stats to 0 ---
+	player.integrity = 0
+	player.bandwidth = 0
+	player.packetloss = 0
+	player.skip_turns = 0
+
+	# --- Clear logical + visual hand ---
+	for card in player.hand:
+		if card and card.is_inside_tree():
+			card.queue_free()
+	player.hand.clear()
+
+	if player_index < player_hands.size():
+		var hand_node = player_hands[player_index]
+		if hand_node and hand_node.has_method("clear_hand"):
+			hand_node.clear_hand()
+
+	# --- Remove from alive players list ---
+	if player_index in alive_players:
+		var removed_idx = alive_players.find(player_index)
+		alive_players.erase(player_index)
+		if removed_idx < current_alive_idx:
+			current_alive_idx -= 1
+		if alive_players.size() > 0:
+			current_alive_idx = current_alive_idx % alive_players.size()
+		else:
+			current_alive_idx = 0
+
+	print("☠️ Player %d has been eliminated! Stats set to 0, all cards removed." % (player_index + 1))
+	_sync_player_to_vars(player_index)
+	update_ui()
+	_update_current_player_from_alive()
