@@ -320,10 +320,13 @@ func _get_player_hand(i: int) -> Array:
 # ----------------------------
 func get_card_cost(name: String) -> int:
 	match name:
-		"Cat": return 3
-		"CorruptedScript": return 2
-		"VirusAttack": return 5
+		"CorruptedScript": return 0   # passive, unplayable
+		"Firewall": return 0          # effect card, unplayable
 		"Overclock": return 4
+		"VirusAttack": return 2
+		"WormVirus": return 7
+		"NetworkUpgrade": return 0    # free to play
+		"DDosAttack": return 8
 		_: return 1
 
 # ----------------------------
@@ -458,7 +461,6 @@ func end_turn() -> void:
 # Input / card clicks
 # ----------------------------
 func card_clicked_from_input_at_position(pos: Vector2, button_index: int) -> void:
-	# keep original implementation if you need it; prefer Card.gd -> gm.try_play_card / try_throw_card
 	var space_state = get_world_2d().direct_space_state
 	var params = PhysicsPointQueryParameters2D.new()
 	params.position = pos
@@ -480,17 +482,21 @@ func card_clicked_from_input_at_position(pos: Vector2, button_index: int) -> voi
 		print("card_clicked: card not in player's hand, ignoring.")
 		return
 
+	var data = card_node.get_card_data()
+	var name = str(data.get("name", ""))
+
 	if button_index == MOUSE_BUTTON_LEFT:
-		var data = card_node.get_card_data()
-		if data.get("name") == "CorruptedScript":
-			print("CorruptedScript is passive and cannot be used.")
+		if name in ["CorruptedScript", "Firewall"]:
+			print("%s is passive and cannot be played." % name)
 			return
 		_try_use_card(current_player_index, card_node)
+
 	elif button_index == MOUSE_BUTTON_RIGHT:
 		if can_throw_card(current_player_index):
 			_try_throw_card(current_player_index, card_node)
 		else:
 			print("Not enough bandwidth to throw a card.")
+
 
 # ----------------------------
 # Try-play / try-throw (used by Card.gd)
@@ -607,7 +613,7 @@ func player_draw_card(player_index: int) -> void:
 		print("Player %d cannot draw: hand full" % [player_index + 1])
 		return
 
-	var card_types = ["Cat", "CorruptedScript", "VirusAttack", "Overclock"]
+	var card_types = ["WormVirus", "CorruptedScript", "VirusAttack", "Overclock", "Firewall", "NetworkUpgrade", "DDosAttack"]
 	var name = card_types[randi() % card_types.size()]
 	var data := {"name": name, "cost": get_card_cost(name)}
 
@@ -762,3 +768,43 @@ func eliminate_player(player_index: int) -> void:
 	_sync_player_to_vars(player_index)
 	update_ui()
 	_update_current_player_from_alive()
+# draw n cards for player WITHOUT ending turn, and WITHOUT enforcing MAX_HAND_SIZE (used by DDos)
+func draw_cards_silent(player_index: int, n: int) -> void:
+	if not _valid_player_index(player_index):
+		return
+	var player = players[player_index]
+	for i in range(n):
+		# instantiate a random card or you may want to choose specific cards
+		var card_types = ["WormVirus", "CorruptedScript", "VirusAttack", "Overclock", "Firewall", "NetworkUpgrade", "DDosAttack"]
+		var name = card_types[randi() % card_types.size()]
+		var data := {"name": name, "cost": get_card_cost(name)}
+
+		var card_node = CARD_SCENE.instantiate()
+		if card_node.has_method("set_card_data"):
+			card_node.set_card_data(data)
+		else:
+			card_node.set("card_type", name)
+
+		# append to logical hand (allowing grow beyond MAX_HAND_SIZE for DDos)
+		player.hand.append(card_node)
+
+		# add visually to PlayerHand if exists (same as player_draw_card)
+		if player_index < player_hands.size():
+			var hand_node = player_hands[player_index]
+			if hand_node and hand_node.has_method("add_card_to_hand"):
+				hand_node.add_card_to_hand(card_node)
+			else:
+				if hand_node:
+					hand_node.add_child(card_node)
+				else:
+					add_child(card_node)
+		else:
+			add_child(card_node)
+
+	# sync + update UI once after all draws
+	if not _syncing:
+		_syncing = true
+		_sync_player_to_vars(player_index)
+		_syncing = false
+	if ui_nodes.size() > 0:
+		update_ui()

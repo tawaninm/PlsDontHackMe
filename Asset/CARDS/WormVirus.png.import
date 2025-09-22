@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bhihhqxt3daf1"
-path="res://.godot/imported/4.png-a60ee346e716def8528e6317045bdf3e.ctex"
+uid="uid://bedjlhll48io8"
+path="res://.godot/imported/WormVirus.png-bfb9ab0dae62a3fb225973f39e5a468c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Asset/CARDS/4.png"
-dest_files=["res://.godot/imported/4.png-a60ee346e716def8528e6317045bdf3e.ctex"]
+source_file="res://Asset/CARDS/WormVirus.png"
+dest_files=["res://.godot/imported/WormVirus.png-bfb9ab0dae62a3fb225973f39e5a468c.ctex"]
 
 [params]
 

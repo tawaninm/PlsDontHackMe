@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dp7c2685alfh1"
-path="res://.godot/imported/16.png-8ae1d65183e9d380d444e9c3bc37d074.ctex"
+uid="uid://os27kw26aqe3"
+path="res://.godot/imported/NetworkUpgrade.png-86099f75643f4a70cb26d229f0328880.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Asset/CARDS/16.png"
-dest_files=["res://.godot/imported/16.png-8ae1d65183e9d380d444e9c3bc37d074.ctex"]
+source_file="res://Asset/CARDS/NetworkUpgrade.png"
+dest_files=["res://.godot/imported/NetworkUpgrade.png-86099f75643f4a70cb26d229f0328880.ctex"]
 
 [params]
 

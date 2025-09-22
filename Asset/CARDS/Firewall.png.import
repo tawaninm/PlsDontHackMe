@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://brwe76bwp2ge6"
-path="res://.godot/imported/12.png-c57bb8924c93a9e5c91da7d2ab3a6123.ctex"
+uid="uid://dqgf0veq6y37s"
+path="res://.godot/imported/Firewall.png-9d54ee7b582e60c64c2ad45fe12f66d5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Asset/CARDS/12.png"
-dest_files=["res://.godot/imported/12.png-c57bb8924c93a9e5c91da7d2ab3a6123.ctex"]
+source_file="res://Asset/CARDS/Firewall.png"
+dest_files=["res://.godot/imported/Firewall.png-9d54ee7b582e60c64c2ad45fe12f66d5.ctex"]
 
 [params]
 

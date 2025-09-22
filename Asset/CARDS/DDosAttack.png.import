@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bawausp0dxewk"
-path="res://.godot/imported/10.png-c8c4d92639e0744d6cde4a13365c22f6.ctex"
+uid="uid://do3r2rjb1fqu8"
+path="res://.godot/imported/DDosAttack.png-e82e10471feeb304f4c397bb1900ccc1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Asset/CARDS/10.png"
-dest_files=["res://.godot/imported/10.png-c8c4d92639e0744d6cde4a13365c22f6.ctex"]
+source_file="res://Asset/CARDS/DDosAttack.png"
+dest_files=["res://.godot/imported/DDosAttack.png-e82e10471feeb304f4c397bb1900ccc1.ctex"]
 
 [params]
 
