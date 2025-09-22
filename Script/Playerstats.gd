@@ -1,24 +1,34 @@
 extends Control
 
-@export var integrity_path: NodePath = "Control/Health1"
-@export var bandwidth_path: NodePath = "Control/Mana1"
-@export var packetloss_path: NodePath = "Control/Error1"
+@export var integrity_path: NodePath
+@export var bandwidth_path: NodePath
+@export var packetloss_path: NodePath
 
 var gm: Node = null
-@onready var integrity: RichTextLabel = $"../../../Control/Health1"
-@onready var bandwidth: RichTextLabel = $"../../../Control/Mana1"
-@onready var packetloss: RichTextLabel = $"../../../Control/Error1"
+@onready var integrity_label: RichTextLabel = $"../../../Control/Health1"
+@onready var bandwidth_label: RichTextLabel = $"../../../Control/Mana1"
+@onready var packetloss_label: RichTextLabel = $"../../../Control/Error1"
 
 func set_gm(game_manager: Node) -> void:
 	gm = game_manager
 
 func _ready() -> void:
-	for lbl in [integrity, bandwidth, packetloss]:
+	for lbl in [integrity_label, bandwidth_label, packetloss_label]:
 		if lbl:
 			lbl.bbcode_enabled = true
 
-func update_ui_for_player(p) -> void:
-	integrity.bbcode_text  = "[color=#e5b931]%d[/color]" % p.integrity
-	bandwidth.bbcode_text  = "[color=#e5b931]%d[/color]" % p.bandwidth
-	packetloss.bbcode_text = "[color=#e5b931]%d[/color]" % p.packetloss
-	print("UI Update -> HP:%d BW:%d PL:%d" % [p.integrity, p.bandwidth, p.packetloss])
+func update_ui_for_player1() -> void:
+	if gm == null:
+		print("❌ No GameManager set for Player1 UI")
+		return
+
+	# Pull directly from GameManager's variables
+	var hp: int = gm.player1_integrity
+	var bw: int = gm.player1_bandwidth
+	var pl: int = gm.player1_packetloss
+
+	integrity_label.bbcode_text  = "[color=#e5b931]%d[/color]" % hp
+	bandwidth_label.bbcode_text  = "[color=#e5b931]%d[/color]" % bw
+	packetloss_label.bbcode_text = "[color=#e5b931]%d[/color]" % pl
+
+	print("✅ UI Update -> Player1 | HP:%d BW:%d PL:%d" % [hp, bw, pl])

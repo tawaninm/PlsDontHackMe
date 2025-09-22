@@ -155,6 +155,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="Error1" type="RichTextLabel" parent="Control"]
+layout_mode = 0
 offset_left = 1068.0
 offset_top = 537.0
 offset_right = 1108.0
@@ -162,25 +163,30 @@ offset_bottom = 577.0
 scale = Vector2(3.5, 3.5)
 theme_override_fonts/normal_font = ExtResource("5_3pt4j")
 theme_override_font_sizes/bold_italics_font_size = 326
+bbcode_enabled = true
 text = "0"
 horizontal_alignment = 1
 
 [node name="Mana1" type="RichTextLabel" parent="Control"]
+layout_mode = 0
 offset_left = 874.0
 offset_top = 537.0
 offset_right = 914.0
 offset_bottom = 577.0
 scale = Vector2(3.5, 3.5)
 theme_override_fonts/normal_font = ExtResource("5_3pt4j")
+bbcode_enabled = true
 text = "0"
 horizontal_alignment = 1
 
 [node name="Health1" type="RichTextLabel" parent="Control"]
+layout_mode = 0
 offset_left = 683.0
 offset_top = 537.0
 offset_right = 723.0
 offset_bottom = 577.0
 scale = Vector2(3.5, 3.5)
 theme_override_fonts/normal_font = ExtResource("5_3pt4j")
+bbcode_enabled = true
 text = "0"
 horizontal_alignment = 1
