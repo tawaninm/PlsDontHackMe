@@ -12,6 +12,7 @@ const MAX_BANDWIDTH := 20
 const MAX_PACKETLOSS := 100
 const MIN_PACKETLOSS := 0
 
+
 const DRAW_BANDWIDTH_GAIN := 2
 const DRAW_PACKETLOSS_REDUCE := 10
 const USE_PACKETLOSS_GAIN := 15
@@ -38,6 +39,8 @@ var player3_integrity := STARTING_INTEGRITY
 var player3_bandwidth := STARTING_BANDWIDTH
 var player3_packetloss := STARTING_PACKETLOSS
 var player3_skip_turns := 0
+
+
 
 # ----------------------------
 # Scene nodes
@@ -78,6 +81,8 @@ var turn_count: int = 0
 # runtime flags
 var _syncing: bool = false
 var game_over: bool = false
+var _turn_ending: bool = false
+
 
 # ----------------------------
 # Utility / prep
@@ -426,17 +431,29 @@ func start_turn() -> void:
 		if turn_controls:
 			turn_controls.show()
 	else:
-		call_deferred("player_skip_turn", current_player_index)
+		call_deferred("ai_take_turn", current_player_index)
 
 
 
 
 func end_turn() -> void:
+	# Prevent multiple queued end_turn()s from executing concurrently.
 	if game_over:
 		return
-
+	if _turn_ending:
+		# already scheduled/processing end of turn - ignore duplicates
+		return
+	_turn_ending = true
+	# hide UI immediately (keeps UX consistent)
 	if turn_controls:
 		turn_controls.hide()
+	# Defer the rest of the end-turn logic to ensure consistent ordering and to
+	# avoid re-entrancy issues when end_turn() is called from inside other deferred calls.
+	call_deferred("_finish_end_turn")
+
+func _finish_end_turn() -> void:
+	# this runs once per end_turn() request
+	_turn_ending = false
 
 	# if no alive players, check winner
 	if alive_players.size() == 0:
@@ -444,7 +461,10 @@ func end_turn() -> void:
 		return
 
 	# advance current_alive_idx and sync mirror
-	current_alive_idx = (current_alive_idx + 1) % alive_players.size()
+	if alive_players.size() > 0:
+		current_alive_idx = (current_alive_idx + 1) % alive_players.size()
+	else:
+		current_alive_idx = 0
 	_update_current_player_from_alive()
 
 	# if only one left, check and show winner
@@ -455,6 +475,50 @@ func end_turn() -> void:
 	# schedule next start
 	if not game_over:
 		call_deferred("start_turn")
+
+		
+func ai_take_turn(player_index: int) -> void:
+	if not _valid_player_index(player_index):
+		return
+	var player = players[player_index]
+	if player.is_human:
+		return
+
+	print("🤖 AI Player %d is taking a turn..." % (player_index + 1))
+
+	# --- 1. Throw corrupted script if in hand (1/3 chance) ---
+	for card in player.hand:
+		var data = card.get_card_data()
+		if data.get("name") == "CorruptedScript":
+			if randi() % 3 == 0 and can_throw_card(player_index):
+				print("AI Player %d throws CorruptedScript." % (player_index + 1))
+				_try_throw_card(player_index, card)
+				return
+
+	# --- 2. Draw a card (1/2 chance) ---
+	if player.hand.size() < MAX_HAND_SIZE:
+		if randi() % 2 == 0:
+			print("AI Player %d draws a card." % (player_index + 1))
+			player_draw_card(player_index)
+			return
+	else:
+		print("AI Player %d cannot draw (hand full) → skip." % (player_index + 1))
+		player_skip_turn(player_index)
+		return
+
+	# --- 3. Play a card (1/4 chance each, left-to-right) ---
+	for card in player.hand:
+		var data = card.get_card_data()
+		if can_use_card(player_index, data):
+			if randi() % 4 == 0:
+				print("AI Player %d plays '%s'." % [player_index + 1, data.get("name")])
+				_try_use_card(player_index, card)
+				return
+
+	# --- 4. Fallback: skip turn ---
+	print("AI Player %d does nothing → skip." % (player_index + 1))
+	player_skip_turn(player_index)
+
 
 # ----------------------------
 # Input / card clicks
@@ -540,7 +604,7 @@ func _try_use_card(player_index: int, card_node: Node) -> void:
 		print("Not enough bandwidth to use '%s' (cost %d)" % [name, cost])
 		return
 
-# --- Pay cost ---
+	# --- Pay cost ---
 	if cost > 0:
 		_add_bandwidth(player_index, -cost)
 
@@ -568,7 +632,13 @@ func _try_use_card(player_index: int, card_node: Node) -> void:
 
 	_sync_player_to_vars(player_index)
 	update_ui()
-	call_deferred("end_turn")
+
+	# end the turn exactly once if this was the active player
+	if player_index == current_player_index:
+		call_deferred("end_turn")
+
+	if player_index == current_player_index:
+		call_deferred("end_turn")
 
 
 
@@ -601,7 +671,11 @@ func _try_throw_card(player_index: int, card_node: Node) -> void:
 
 	_sync_player_to_vars(player_index)
 	update_ui()
-	call_deferred("end_turn")
+
+	# end the turn exactly once if this was the active player
+	if player_index == current_player_index:
+		call_deferred("end_turn")
+
 
 # ----------------------------
 # Actions: draw / skip
@@ -648,6 +722,10 @@ func player_draw_card(player_index: int) -> void:
 
 	_sync_player_to_vars(player_index)
 	update_ui()
+
+	if player_index == current_player_index:
+		call_deferred("end_turn")
+
 
 func player_skip_turn(player_index: int) -> void:
 	if not _valid_player_index(player_index):

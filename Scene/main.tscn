@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://wf8xef8mvt6q" path="res://Script/card_manager.gd" id="1_56fl5"]
 [ext_resource type="Script" uid="uid://bwtg0fuqx2de5" path="res://Script/main.gd" id="1_75buv"]
 [ext_resource type="Texture2D" uid="uid://dt603c7fwj5ib" path="res://Asset/Main Game/MainGameBackground.png" id="2_3pt4j"]
-[ext_resource type="Script" uid="uid://dldnexsstevk" path="res://Script/player_hand.gd" id="3_r34rm"]
+[ext_resource type="Script" uid="uid://dldnexsstevk" path="res://Script/player_hand1.gd" id="3_r34rm"]
 [ext_resource type="Script" uid="uid://1kojqqmyjx8e" path="res://Script/deck.gd" id="4_1xcnr"]
 [ext_resource type="FontFile" uid="uid://813uw6m7dur7" path="res://Asset/Font/PressStart2P-Regular.ttf" id="5_3pt4j"]
 [ext_resource type="Script" uid="uid://ba0ysbiwv3o4a" path="res://Script/input.gd" id="6_ow1sv"]
