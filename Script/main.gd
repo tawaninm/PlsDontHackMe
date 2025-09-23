@@ -3,7 +3,7 @@ extends Node2D
 # =============================
 # CONFIG / BALANCE
 # =============================
-const MAX_HAND_SIZE := 15
+const MAX_HAND_SIZE := 7
 const MAX_INTEGRITY := 100
 const STARTING_INTEGRITY := 100
 const STARTING_BANDWIDTH := 0

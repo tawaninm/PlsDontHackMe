@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://b7wlgwr6spoua"]
+[gd_scene load_steps=18 format=3 uid="uid://b7wlgwr6spoua"]
 
 [ext_resource type="Script" uid="uid://wf8xef8mvt6q" path="res://Script/card_manager.gd" id="1_56fl5"]
 [ext_resource type="Script" uid="uid://bwtg0fuqx2de5" path="res://Script/main.gd" id="1_75buv"]
@@ -9,6 +9,8 @@
 [ext_resource type="Script" uid="uid://ba0ysbiwv3o4a" path="res://Script/input.gd" id="6_ow1sv"]
 [ext_resource type="Script" uid="uid://bk8o7ohxnvyxk" path="res://Script/turn_controls.gd" id="7_c2iwn"]
 [ext_resource type="Script" uid="uid://bla263qdqi2og" path="res://Script/Playerstats.gd" id="8_3pt4j"]
+[ext_resource type="Script" uid="uid://sf0lno8qhps5" path="res://Script/player_hand_2.gd" id="8_hspdg"]
+[ext_resource type="Script" uid="uid://wgvitapvryvq" path="res://Script/player_hand_3.gd" id="9_j63at"]
 [ext_resource type="Texture2D" uid="uid://c07g518lcoppr" path="res://Asset/Main Game/Finalboard.png" id="10_7y4ci"]
 [ext_resource type="AudioStream" uid="uid://bs8gbtjmqmads" path="res://Asset/Music/RPReplay_Final1758375732 (online-audio-converter.com).mp3" id="11_mxd2g"]
 [ext_resource type="Script" uid="uid://bugceq68kvsey" path="res://Scene/main_game_music.gd" id="12_0sxm5"]
@@ -70,10 +72,10 @@ script = ExtResource("1_56fl5")
 script = ExtResource("3_r34rm")
 
 [node name="PlayerHand2" type="Node2D" parent="."]
-script = ExtResource("3_r34rm")
+script = ExtResource("8_hspdg")
 
 [node name="PlayerHand3" type="Node2D" parent="."]
-script = ExtResource("3_r34rm")
+script = ExtResource("9_j63at")
 
 [node name="Input" type="Node2D" parent="."]
 script = ExtResource("6_ow1sv")
